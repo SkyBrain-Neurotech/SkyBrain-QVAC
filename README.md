@@ -100,7 +100,10 @@ python -m venv .venv
 pip install -e ".[dev]"
 
 # 3a. If you have SkyBrain SDK access (Tether grants team, internal use):
-#     Clone the private SDK repo as a sibling of this one, then install the wheel.
+#     First accept your GitHub collaborator invite to sdk-release.
+#     Then clone it as a sibling of this repo and install the wheel.
+#     (If `git clone` prompts for credentials, see USER_GUIDE.md
+#      § "If git clone prompts you for credentials".)
 git clone https://github.com/SkyBrain-Neurotech/sdk-release.git ../sdk-release
 pip install ../sdk-release/wheels/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
 

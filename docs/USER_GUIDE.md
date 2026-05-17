@@ -121,7 +121,10 @@ distributed for general developer use. It's gated to:
 ### If you have SDK access
 
 You'll have been added as a Read collaborator to
-`SkyBrain-Neurotech/sdk-release`. After accepting the GitHub invite:
+`SkyBrain-Neurotech/sdk-release`. **Accept the invite first** — check
+your GitHub notifications inbox or the email GitHub sent you. The
+clone in the next step will fail with `Repository not found` if you
+haven't accepted yet.
 
 ```powershell
 # Clone the private SDK repo as a SIBLING of this bridge repo.
@@ -132,6 +135,33 @@ git clone https://github.com/SkyBrain-Neurotech/sdk-release.git ..\sdk-release
 # Install the wheel into THIS bridge's venv
 pip install ..\sdk-release\wheels\skybrain_eeg_sdk-1.5.0-py3-none-any.whl
 ```
+
+#### If `git clone` prompts you for credentials
+
+On a fresh machine, GitHub will ask you to authenticate before letting
+you clone a private repo. Three ways this typically resolves:
+
+1. **Browser-based auth (default on Windows 10/11 and macOS).** Git
+   Credential Manager opens a browser window automatically. Log into
+   github.com with the account you were invited under. Credentials get
+   cached locally for ~30 days; subsequent clones just work.
+2. **SSH key.** If you have an SSH key registered with your GitHub
+   account, use the SSH URL instead:
+   ```powershell
+   git clone git@github.com:SkyBrain-Neurotech/sdk-release.git ..\sdk-release
+   ```
+3. **Personal Access Token (PAT).** On Linux/CI machines without a
+   browser, create a PAT at
+   [github.com/settings/tokens](https://github.com/settings/tokens)
+   with the `repo` scope (Read access is enough for clones). When git
+   prompts for a password, paste the token instead of your GitHub
+   password.
+
+If you see `Repository not found` instead of an auth prompt: it means
+either (a) you haven't accepted the collaborator invite yet, or (b) you're
+authenticated as the wrong GitHub account. Check your account at
+[github.com](https://github.com) (top-right avatar) and re-accept the
+invite if needed.
 
 After this, your folder structure looks like:
 
