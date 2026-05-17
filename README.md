@@ -90,24 +90,28 @@ adding the import anywhere else and the build breaks.
 Full beginner walkthrough in **[docs/USER_GUIDE.md](docs/USER_GUIDE.md)**.
 
 ```bash
-# 1. Clone
+# 1. Clone the open-source bridge
 git clone https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC.git
 cd SkyBrain-QVAC
 
-# 2. Install the open-source bridge
+# 2. Install dev dependencies
 python -m venv .venv
 .venv/Scripts/activate    # PowerShell:  .\.venv\Scripts\Activate.ps1
 pip install -e ".[dev]"
 
-# 3. Install the SkyBrain SDK (proprietary, distribution-gated)
-#    Request access at info@skybrain.in — you'll receive a wheel file.
-pip install /path/to/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+# 3a. If you have SkyBrain SDK access (Tether grants team, internal use):
+pip install /path/to/sdk-release/wheels/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+
+# 3b. If you don't have SDK access, run the bridge in docs-only mode:
+$env:SKYBRAIN_QVAC_REQUIRE_SDK="false"    # PowerShell
+# (or `export SKYBRAIN_QVAC_REQUIRE_SDK=false` on macOS / Linux / Git Bash)
 
 # 4. Run
 python -m service.main
 ```
 
-See **[SDK access](#sdk-access)** below for what works without the SDK installed.
+See **[About the SkyBrain SDK](#about-the-skybrain-sdk)** below for
+which endpoints work without the SDK installed.
 
 In another shell, try the live endpoints. **Important — Windows users:** `curl` in PowerShell is aliased to `Invoke-WebRequest` (different flag set); cmd.exe's curl needs escaped double quotes. Pick the form for your shell.
 
@@ -249,40 +253,55 @@ lint-imports           # architecture boundary
 CI runs the full sweep on macOS, Ubuntu, and Windows for Python 3.11 + 3.12 —
 see [`ci/github-actions/ci.yml`](ci/github-actions/ci.yml).
 
-## SDK access
+## About the SkyBrain SDK
 
-This bridge is open-source under Apache 2.0. The **SkyBrain SDK** that
-performs the actual signal processing is **proprietary** and
-distributed under separate commercial terms.
+This bridge wraps **SkyBrain Neurotech's proprietary EEG/BCI SDK** —
+the same engine that powers SkyBrain's commercial product line:
+SkyBrain Studio (real-time acquisition GUI), SkyBrain Analyze
+(desktop analysis suite), the Cognitive Edge mobile app, and SkyBrain's
+Enterprise API + data vault. 50+ biomarkers, 7 BCI paradigms, 5
+Bayesian classifiers, CDSCO-compliant audit, deterministic computation.
 
-### How to get the SDK
+The SDK is **not currently distributed for general developer use.**
+It is gated to:
 
-1. Email **info@skybrain.in** with:
-   - Your name and organisation
-   - Intended use (evaluation, research, commercial integration)
-   - Your GitHub handle
-2. Approved requestors are added as Read collaborators to a private
-   distribution repo (`SkyBrain-Neurotech/sdk-release`).
-3. Accept the GitHub invitation from your notifications.
-4. Clone that repo and install the wheel:
-   ```bash
-   git clone https://github.com/SkyBrain-Neurotech/sdk-release.git
-   pip install ./sdk-release/wheels/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
-   ```
+1. SkyBrain's own commercial products
+2. The **Tether grants team** for the duration of QVAC grant review
+   (this bridge is the Phase 1 POC deliverable; reviewers need the SDK
+   installed to run the bridge end-to-end)
 
-Typical response time: 1-2 business days for evaluation /
-research access. Commercial inquiries handled directly by the founder.
+If, as the grant progresses, Tether identifies specific SDK functions
+that should be open-sourced for the broader QVAC ecosystem, that's a
+future scope conversation — and SkyBrain is open to building OSS
+implementations of those specific functions when there's a defined need.
 
-### What works after install
+### What you can do without SDK access
 
-`/v1/eeg/biomarkers` across the `spectral`, `qc`, `advanced`, and
-`full` bundles, plus the discovery endpoints, run on the SDK's
-**default tier — no license key needed**.
+The bridge source code is open under Apache 2.0 — anyone can read it,
+fork it, study the integration pattern, and use it as a reference for
+how to plug a proprietary Python SDK into QVAC's OpenAI-compatible
+HTTP surface. You can also boot the service in docs-only mode:
 
-Advanced features (full BCI classifier inference, clinical-grade
-analysis suites, multi-channel adaptive pipelines) require a key bound
-to your hardware fingerprint. Those keys are issued per-party at
-request time; ask via `info@skybrain.in`.
+```bash
+SKYBRAIN_QVAC_REQUIRE_SDK=false python -m service.main
+```
+
+In that mode:
+- `GET /v1/health` works (reports `sdk_version: "unavailable"`)
+- `GET /v1/capabilities` works (the static catalogue from `docs/capabilities.md`)
+- OpenAPI / Swagger UI at `http://127.0.0.1:8765/docs` is fully browsable
+- Inference endpoints fail with a clean `sdk_unavailable` error envelope
+
+That's enough surface to design a QVAC client against the API contract
+without running the SDK.
+
+### Commercial / enterprise SkyBrain deployments
+
+If you're evaluating SkyBrain for clinical, enterprise data collection,
+or commercial-product deployments (Studio, Analyze, Enterprise API),
+that's a separate commercial sales track. Contact `info@skybrain.in`
+to discuss enterprise licensing — that conversation happens outside
+this repo.
 
 ### What works without the SDK installed
 

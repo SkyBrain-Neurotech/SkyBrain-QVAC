@@ -107,61 +107,77 @@ lint tools.
 
 ---
 
-## Step 4 — Request and install the SkyBrain SDK
+## Step 4 — The SkyBrain SDK (only if you have access)
 
-The SkyBrain SDK is **proprietary and distribution-gated** — you can't
-`pip install` it from PyPI, and the wheel is not attached to public
-GitHub releases. SkyBrain distributes it through a separate **private
-GitHub repo** that you'll be added to once your request is approved.
+The bridge wraps SkyBrain Neurotech's **proprietary EEG/BCI SDK** —
+the engine that powers SkyBrain's commercial product line (Studio,
+Analyze, Enterprise API, Cognitive Edge). The SDK is not currently
+distributed for general developer use. It's gated to:
 
-### Request access
+1. SkyBrain's own commercial products, and
+2. The Tether grants team for the duration of the QVAC grant review,
+   so reviewers can run this bridge end-to-end against the real engine.
 
-1. Email **info@skybrain.in** with:
-   - Your name and organisation
-   - Intended use (evaluation, research, commercial integration, etc.)
-   - **Your GitHub handle** — required so you can be invited
-2. SkyBrain typically responds within 1-2 business days. You'll get a
-   GitHub notification inviting you as a Read collaborator on
-   `SkyBrain-Neurotech/sdk-release`.
-3. Accept the invite from your GitHub notifications page.
+### If you have SDK access
 
-### Install the wheel
+You'll have been added as a Read collaborator to
+`SkyBrain-Neurotech/sdk-release`. After accepting the GitHub invite:
 
 ```powershell
-# 1. Clone the private SDK repo (only works once you've accepted the invite)
+# Clone the private SDK repo
 git clone https://github.com/SkyBrain-Neurotech/sdk-release.git
 
-# 2. Install the wheel from there into THIS bridge's venv
-#    (make sure the venv is activated — your prompt should show (.venv))
+# Install the wheel into THIS bridge's venv
+#  (make sure the venv is activated — your prompt should show (.venv))
 pip install .\sdk-release\wheels\skybrain_eeg_sdk-1.5.0-py3-none-any.whl
 ```
 
-Verify it worked:
+Verify:
 
 ```powershell
 python -c "import skybrain_sdk; print('SDK', skybrain_sdk.__version__, 'OK')"
 ```
 
-You should see `SDK 1.5.0 OK` (or your version number).
+You should see `SDK 1.5.0 OK`.
 
-> **What can I do without the SDK?** Set the environment variable
-> `SKYBRAIN_QVAC_REQUIRE_SDK=false` before starting the service.
-> `GET /v1/health` and `GET /v1/capabilities` will still work — useful
-> for inspecting the API surface or browsing the OpenAPI docs at
-> `http://127.0.0.1:8765/docs`. Inference endpoints will return a
-> clear `sdk_unavailable` error envelope instead of a stack trace.
+If your grant scope includes advanced features beyond the default
+bridge surface, your API key is in your party's grant folder
+(`sdk-release/grants/<your-party-name>/README.md`). Apply it once at
+the top of any Python script:
 
-> **Permission denied / can't find the wheel?** Make sure you're in
-> the activated venv (your prompt shows `(.venv)`) and that the path
-> to the wheel is right. On Windows, use forward slashes or
-> double-backslashes in the path.
+```python
+from skybrain_sdk import set_api_key
+set_api_key("<the key string from your grant README>")
+```
 
-> **Will I need a license key?** For the default endpoints
-> (`/v1/eeg/biomarkers` with `spectral`, `qc`, `advanced`, or `full`),
-> no. The SDK ships with a default tier that covers these. Advanced
-> classifier features and clinical-grade pipelines require a paid
-> license key bound to your hardware fingerprint; it's issued together
-> with the wheel for approved commercial users.
+The default bridge endpoints (`spectral`, `qc`, `advanced`, `full`
+biomarker bundles, plus health + capabilities) need no key.
+
+### If you don't have SDK access
+
+You can still run the bridge in **docs-only mode** to inspect the API
+surface, browse the OpenAPI / Swagger UI, and design a QVAC client
+against the contract. Set this env var before starting the service:
+
+```powershell
+$env:SKYBRAIN_QVAC_REQUIRE_SDK = "false"
+python -m service.main
+```
+
+What works in docs-only mode:
+
+- `GET /v1/health` — reports `sdk_version: "unavailable"` but returns 200
+- `GET /v1/capabilities` — full static catalogue of paradigms, classifiers, bundles
+- `http://127.0.0.1:8765/docs` — full OpenAPI / Swagger UI
+- All endpoints return correctly-shaped JSON envelopes (live or error)
+
+Inference endpoints fail with a clean `sdk_unavailable` error rather
+than a stack trace.
+
+For commercial / enterprise evaluation of SkyBrain (Studio, Analyze,
+Enterprise API), that's a separate sales track. Contact
+`info@skybrain.in` to discuss enterprise licensing — that conversation
+happens outside this repo.
 
 ---
 
