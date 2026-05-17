@@ -35,11 +35,21 @@ dependencies = [
 
 [project.optional-dependencies]
 sdk = [
-    # The proprietary SkyBrain SDK. Distribution name is skybrain-eeg-sdk;
-    # the import package is `skybrain_sdk`. Not on public PyPI — users with
-    # access install it manually (editable from a local checkout, or from
-    # SkyBrain's private wheel index). Pinned loosely so this bridge tolerates
-    # SDK minor-version bumps without churn.
+    # The proprietary SkyBrain SDK is NOT on public PyPI and pip cannot
+    # auto-fetch it from this `[sdk]` extra alone. This line is declarative —
+    # it documents the version constraint for tooling and lockfile clarity.
+    #
+    # To actually install:
+    #   1. Get collaborator access to the private repo:
+    #          https://github.com/SkyBrain-Neurotech/sdk-release
+    #      (gated to the Tether grants team for QVAC POC review; see README
+    #      § "About the SkyBrain SDK")
+    #   2. Clone it as a sibling of this bridge:
+    #          git clone https://github.com/SkyBrain-Neurotech/sdk-release.git ../sdk-release
+    #   3. Install the wheel from the local clone:
+    #          pip install ../sdk-release/wheels/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+    #
+    # Distribution name is `skybrain-eeg-sdk`; import name is `skybrain_sdk`.
     "skybrain-eeg-sdk>=1.5,<2.0",
 ]
 dev = [

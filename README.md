@@ -100,7 +100,9 @@ python -m venv .venv
 pip install -e ".[dev]"
 
 # 3a. If you have SkyBrain SDK access (Tether grants team, internal use):
-pip install /path/to/sdk-release/wheels/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+#     Clone the private SDK repo as a sibling of this one, then install the wheel.
+git clone https://github.com/SkyBrain-Neurotech/sdk-release.git ../sdk-release
+pip install ../sdk-release/wheels/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
 
 # 3b. If you don't have SDK access, run the bridge in docs-only mode:
 $env:SKYBRAIN_QVAC_REQUIRE_SDK="false"    # PowerShell

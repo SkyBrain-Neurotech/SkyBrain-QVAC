@@ -124,13 +124,30 @@ You'll have been added as a Read collaborator to
 `SkyBrain-Neurotech/sdk-release`. After accepting the GitHub invite:
 
 ```powershell
-# Clone the private SDK repo
-git clone https://github.com/SkyBrain-Neurotech/sdk-release.git
+# Clone the private SDK repo as a SIBLING of this bridge repo.
+# (you should be standing inside the SkyBrain-QVAC folder when running these;
+#  if your prompt shows `(.venv)`, you're in the right venv)
+git clone https://github.com/SkyBrain-Neurotech/sdk-release.git ..\sdk-release
 
 # Install the wheel into THIS bridge's venv
-#  (make sure the venv is activated — your prompt should show (.venv))
-pip install .\sdk-release\wheels\skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+pip install ..\sdk-release\wheels\skybrain_eeg_sdk-1.5.0-py3-none-any.whl
 ```
+
+After this, your folder structure looks like:
+
+```
+D:\Workspace\May\
+├── SkyBrain-QVAC\          ← this bridge repo (open-source)
+│   ├── service\
+│   ├── docs\
+│   └── ...
+└── sdk-release\            ← the private SDK repo (Read-collaborator-only)
+    └── wheels\skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+```
+
+Keeping them as siblings (rather than nesting `sdk-release` inside the
+bridge repo) avoids any accidental commits of the proprietary wheel
+into the public bridge repo.
 
 Verify:
 
