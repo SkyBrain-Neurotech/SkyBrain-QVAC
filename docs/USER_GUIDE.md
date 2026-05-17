@@ -162,24 +162,36 @@ cd D:\projects\SkyBrain-QVAC
 .\.venv\Scripts\Activate.ps1
 ```
 
+> **PowerShell users — important.** In PowerShell, the name `curl`
+> is an alias for `Invoke-WebRequest`, which doesn't accept curl's
+> `-H` / `-d` flags. Use **`Invoke-RestMethod`** (the PowerShell-native
+> command, shown below) or **`curl.exe`** (the real binary that ships
+> with Windows 10/11). Don't use the bare word `curl` in PowerShell.
+
 ### 6a. Check it's alive
 
 ```powershell
-curl http://127.0.0.1:8765/v1/health
+Invoke-RestMethod http://127.0.0.1:8765/v1/health
 ```
 
-Expected:
+Expected output:
 
-```json
-{"status":"ok","service":"skybrain-qvac-bci","service_version":"0.1.0","sdk_version":"1.5.0","uptime_seconds":12.5}
+```
+status          : ok
+service         : skybrain-qvac-bci
+service_version : 0.1.0
+sdk_version     : 1.5.0
+uptime_seconds  : 12.5
 ```
 
 If you see this — congratulations, the bridge is working.
 
+(On macOS / Linux / Git Bash, the equivalent is `curl http://127.0.0.1:8765/v1/health`.)
+
 ### 6b. See what the service can do
 
 ```powershell
-curl http://127.0.0.1:8765/v1/capabilities
+Invoke-RestMethod http://127.0.0.1:8765/v1/capabilities
 ```
 
 You'll get back a JSON listing of the seven BCI paradigms, five
@@ -204,8 +216,7 @@ The SDK ships with a CLI that generates realistic test recordings:
 
 ```powershell
 mkdir samples 2>$null
-skybrain-generate-edf --output samples\demo --duration 30 --channels 4 `
-                       --pre-duration 10 --post-duration 10
+skybrain-generate-edf --output samples\demo --duration 30 --channels 4 --pre-duration 10 --post-duration 10
 ```
 
 This produces `samples\demo.edf` — a 30-second 4-channel synthetic EEG
@@ -218,16 +229,34 @@ hardware works. Note the absolute path.
 
 ### Now compute biomarkers
 
+Pick the form for your shell. All three are single-line, paste-friendly:
+
+**Windows PowerShell** (recommended — handles JSON cleanly):
+
 ```powershell
-curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers `
-  -H "Content-Type: application/json" `
-  -d '{\"session_file\":\"samples/demo.edf\",\"biomarker_set\":\"spectral\"}'
+Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/biomarkers -ContentType "application/json" -Body '{"session_file":"samples/demo.edf","biomarker_set":"spectral"}'
 ```
 
-> **Tip — Windows path quoting.** PowerShell needs backslashes
-> escaped inside JSON: `\"samples/demo.edf\"`. On macOS / Linux, just
-> use `'{"session_file":"samples/demo.edf","biomarker_set":"spectral"}'`
-> with single quotes.
+**Windows cmd.exe** (use **escaped double quotes** — cmd treats `'` as a literal character, so single-quoted JSON arrives at the server as `{}` and you'll get a JSON-decode error):
+
+```cmd
+curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d "{\"session_file\":\"samples/demo.edf\",\"biomarker_set\":\"spectral\"}"
+```
+
+**macOS / Linux / Git Bash:**
+
+```bash
+curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d '{"session_file":"samples/demo.edf","biomarker_set":"spectral"}'
+```
+
+> **Why three different commands?** PowerShell's `curl` is an alias for
+> `Invoke-WebRequest` and rejects real curl's `-H` flag (it expects a
+> dictionary, not a string). cmd.exe has real curl but doesn't honor
+> single quotes — they're literal characters. Bash handles single
+> quotes natively. If you want one command that works in both Windows
+> shells, use `curl.exe` (forces the real binary) with cmd-style
+> escaped double quotes — the cmd example above also works in
+> PowerShell if you replace `curl` with `curl.exe`.
 
 You'll get a JSON response like:
 
@@ -277,16 +306,18 @@ different SDK function under the hood:
 | `advanced` | Full analysis with FOOOF aperiodic parameters, nonlinear measures, connectivity. | ~140 ms |
 | `full` | Everything `advanced` includes, plus the QC report and metadata. | ~140 ms |
 
-Run all five against the same recording to see how they differ:
+Run all five against the same recording to see how they differ.
+
+**Windows PowerShell:**
 
 ```powershell
-foreach ($set in @("spectral", "qc", "cognitive", "advanced", "full")) {
-    Write-Host "`n=== biomarker_set=$set ===" -ForegroundColor Cyan
-    curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers `
-      -H "Content-Type: application/json" `
-      -d "{\""session_file\"":\""samples/demo.edf\"",\""biomarker_set\"":\""$set\""}" `
-      | python -m json.tool
-}
+foreach ($set in @("spectral", "qc", "cognitive", "advanced", "full")) { Write-Host "`n=== biomarker_set=$set ===" -ForegroundColor Cyan; Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/biomarkers -ContentType "application/json" -Body "{`"session_file`":`"samples/demo.edf`",`"biomarker_set`":`"$set`"}" | ConvertTo-Json -Depth 4 }
+```
+
+**macOS / Linux / Git Bash:**
+
+```bash
+for SET in spectral qc cognitive advanced full; do echo "=== biomarker_set=$SET ==="; curl -s -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d "{\"session_file\":\"samples/demo.edf\",\"biomarker_set\":\"$SET\"}" | python -m json.tool; done
 ```
 
 ---
@@ -333,11 +364,18 @@ blocked on:
 | `POST /v1/eeg/ingest` | Stream realtime EEG from hardware or file replay | Phase 1 wk 9-10 |
 | `POST /v1/eeg/compare` | Two-recording statistical comparison (pre/post studies) | Phase 1 wk 11-12 |
 
-Try one:
+Try one (use `-SkipHttpErrorCheck` in PowerShell 7+ to see the 501 body; or wrap in try/catch on Windows PowerShell 5):
+
+**Windows PowerShell:**
 
 ```powershell
-curl -X POST http://127.0.0.1:8765/v1/bci/classify `
-  -H "Content-Type: application/json" -d '{}'
+try { Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/bci/classify -ContentType "application/json" -Body '{}' } catch { $_.ErrorDetails.Message }
+```
+
+**macOS / Linux / Git Bash:**
+
+```bash
+curl -X POST http://127.0.0.1:8765/v1/bci/classify -H "Content-Type: application/json" -d '{}'
 ```
 
 You'll get a 501 with a clear message pointing at the milestone that
@@ -357,11 +395,29 @@ If it errors, re-run `pip install` on the wheel from step 4.
 A. Either stop whatever's using it, or run the service on a different
 port: `$env:SKYBRAIN_QVAC_PORT=9000; python -m service.main`.
 
-**Q. `curl` isn't recognised.**
-A. On older Windows installs, `curl` is missing. Use
-`Invoke-RestMethod` instead:
-```powershell
-Invoke-RestMethod http://127.0.0.1:8765/v1/health
+**Q. PowerShell says `Cannot bind parameter 'Headers'` when I use `curl -H`.**
+A. In PowerShell, `curl` is an alias for `Invoke-WebRequest`, which
+expects `-Headers` as a dictionary — it can't take `Content-Type: ...`
+as a string. Three fixes:
+
+1. Use `Invoke-RestMethod` (recommended, native, no quote-escaping):
+   ```powershell
+   Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/biomarkers -ContentType "application/json" -Body '{"session_file":"samples/demo.edf","biomarker_set":"spectral"}'
+   ```
+2. Use `curl.exe` (the real curl binary that ships with Windows 10/11),
+   not the bare word `curl`:
+   ```powershell
+   curl.exe -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d "{\"session_file\":\"samples/demo.edf\",\"biomarker_set\":\"spectral\"}"
+   ```
+3. Run the commands from Git Bash or WSL, where `curl` is real curl.
+
+**Q. cmd.exe says my POST body parsed to `{}` even though I sent JSON.**
+A. cmd.exe doesn't treat single quotes as grouping characters — they
+become literal apostrophes inside the request body, mangling the JSON
+before it even reaches curl. Always use **double quotes with backslash-escaped
+inner quotes** in cmd:
+```cmd
+curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d "{\"session_file\":\"samples/demo.edf\",\"biomarker_set\":\"spectral\"}"
 ```
 
 **Q. The biomarker call returns `recording_not_found` even though the

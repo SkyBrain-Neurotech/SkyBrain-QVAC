@@ -17,9 +17,18 @@ biomarkers. No cloud calls. No telemetry. SHA-256 audit log per inference for
 CDSCO / DPDP / GDPR compliance.
 
 ```bash
-curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers \
-  -H "Content-Type: application/json" \
-  -d '{"session_file": "/path/to/recording.edf", "biomarker_set": "spectral"}'
+# macOS / Linux / Git Bash
+curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d '{"session_file":"/path/to/recording.edf","biomarker_set":"spectral"}'
+```
+
+```cmd
+:: Windows cmd.exe (note: escaped double quotes, not single quotes)
+curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d "{\"session_file\":\"/path/to/recording.edf\",\"biomarker_set\":\"spectral\"}"
+```
+
+```powershell
+# Windows PowerShell — use Invoke-RestMethod, not curl
+Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/biomarkers -ContentType "application/json" -Body '{"session_file":"/path/to/recording.edf","biomarker_set":"spectral"}'
 ```
 
 ```json
@@ -95,21 +104,51 @@ pip install https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC/releases/latest/
 python -m service.main
 ```
 
-In another shell:
+In another shell, try the live endpoints. **Important — Windows users:** `curl` in PowerShell is aliased to `Invoke-WebRequest` (different flag set); cmd.exe's curl needs escaped double quotes. Pick the form for your shell.
+
+**Windows PowerShell** (recommended — cleanest):
+
+```powershell
+Invoke-RestMethod http://127.0.0.1:8765/v1/health
+Invoke-RestMethod http://127.0.0.1:8765/v1/capabilities
+```
+
+**Windows cmd.exe:**
+
+```cmd
+curl http://127.0.0.1:8765/v1/health
+curl http://127.0.0.1:8765/v1/capabilities
+```
+
+**macOS / Linux / Git Bash:**
 
 ```bash
 curl http://127.0.0.1:8765/v1/health
 curl http://127.0.0.1:8765/v1/capabilities
 ```
 
-Don't have an EEG recording? Generate one with the SDK's own CLI:
+Don't have an EEG recording? Generate one with the SDK's own CLI, then send it to the biomarker endpoint.
 
 ```bash
-skybrain-generate-edf --output samples/demo --duration 30 --channels 4 \
-                       --pre-duration 10 --post-duration 10
-curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers \
-  -H "Content-Type: application/json" \
-  -d '{"session_file": "samples/demo.edf", "biomarker_set": "spectral"}'
+skybrain-generate-edf --output samples/demo --duration 30 --channels 4 --pre-duration 10 --post-duration 10
+```
+
+**PowerShell:**
+
+```powershell
+Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/biomarkers -ContentType "application/json" -Body '{"session_file":"samples/demo.edf","biomarker_set":"spectral"}'
+```
+
+**cmd.exe** (escaped double quotes — single quotes don't work in cmd):
+
+```cmd
+curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d "{\"session_file\":\"samples/demo.edf\",\"biomarker_set\":\"spectral\"}"
+```
+
+**macOS / Linux / Git Bash:**
+
+```bash
+curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d '{"session_file":"samples/demo.edf","biomarker_set":"spectral"}'
 ```
 
 ## Endpoint status
