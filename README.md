@@ -61,9 +61,9 @@ Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/biomarkers -Con
    │   GET  /v1/health                                    │
    │   GET  /v1/capabilities                              │
    │   POST /v1/eeg/biomarkers     ◀── live               │
+   │   POST /v1/eeg/compare        ◀── live               │
    │   POST /v1/bci/classify       ◀── Phase 1 wk 5–6     │
    │   POST /v1/eeg/ingest         ◀── Phase 1 wk 9–10    │
-   │   POST /v1/eeg/compare        ◀── Phase 1 wk 11–12   │
    └────────────────────┬─────────────────────────────────┘
                         │ adapter Protocol
                         │ (sole skybrain_sdk import site)
@@ -177,14 +177,30 @@ curl -s -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: applic
 |---|---|---|
 | `GET /v1/health` | **live** | Liveness + SDK version |
 | `GET /v1/capabilities` | **live** | 7 paradigms × 5 classifiers × 5 biomarker sets |
-| `POST /v1/eeg/biomarkers` | **live** | `spectral · cognitive · qc · advanced · full` |
+| `POST /v1/eeg/biomarkers` | **live** | `spectral · cognitive · qc · advanced · full`; `view=summary` (default) or `view=detailed` |
+| `POST /v1/eeg/compare` | **live** | Two-file differential. Returns metric names + top 15 diffs ranked by %-change + one-line auto-summary. Try it with the eyes-open / eyes-closed EDFs in `docs/examples/`. |
 | `POST /v1/bci/classify` | scaffolded (501) | Wired in Phase 1 week 5-6 |
 | `POST /v1/eeg/ingest` | scaffolded (501) | Wired in Phase 1 week 9-10 |
-| `POST /v1/eeg/compare` | scaffolded (501) | Wired in Phase 1 week 11-12 |
 
-All six endpoints exist; the three scaffolded ones return structured JSON
+All six endpoints exist; the two scaffolded ones return structured JSON
 explaining what they're blocked on, so client integration can begin against
 the live contracts.
+
+### Try the demo (eyes-open vs eyes-closed)
+
+After installing the SDK (see [About the SkyBrain SDK](#about-the-skybrain-sdk)) and booting the service:
+
+```powershell
+# Windows PowerShell
+Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/compare -ContentType "application/json" -Body '{"session_a_file":"docs/examples/eyes-open.csv","session_b_file":"docs/examples/eyes-closed.csv","label_a":"eyes_open","label_b":"eyes_closed"}' | ConvertTo-Json -Depth 10
+```
+
+```bash
+# macOS / Linux / Git Bash
+curl -s -X POST http://127.0.0.1:8765/v1/eeg/compare -H "Content-Type: application/json" -d '{"session_a_file":"docs/examples/eyes-open.csv","session_b_file":"docs/examples/eyes-closed.csv","label_a":"eyes_open","label_b":"eyes_closed"}' | python -m json.tool
+```
+
+The summary line typically reads something like *"Strong alpha-band power increase (~200%) over occipital channel O1 in eyes_closed vs eyes_open — consistent with the classic Berger effect."*
 
 ## Scope
 

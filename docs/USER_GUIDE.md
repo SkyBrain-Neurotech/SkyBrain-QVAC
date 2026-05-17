@@ -435,6 +435,64 @@ for SET in spectral qc cognitive advanced full; do echo "=== biomarker_set=$SET 
 
 ---
 
+## Step 8.5 — The eyes-open vs eyes-closed demo (compare endpoint)
+
+A much more compelling demo than dumping single-file biomarkers: send two recordings and get a curated differential. The repo ships with real eyes-open and eyes-closed EDFs under `docs/examples/` so you can run this immediately.
+
+**Windows PowerShell:**
+
+```powershell
+Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/compare -ContentType "application/json" -Body '{"session_a_file":"docs/examples/eyes-open.csv","session_b_file":"docs/examples/eyes-closed.csv","label_a":"eyes_open","label_b":"eyes_closed"}' | ConvertTo-Json -Depth 10
+```
+
+**Windows cmd.exe:**
+
+```cmd
+curl -s -X POST http://127.0.0.1:8765/v1/eeg/compare -H "Content-Type: application/json" -d "{\"session_a_file\":\"docs/examples/eyes-open.csv\",\"session_b_file\":\"docs/examples/eyes-closed.csv\",\"label_a\":\"eyes_open\",\"label_b\":\"eyes_closed\"}" | python -m json.tool
+```
+
+**macOS / Linux / Git Bash:**
+
+```bash
+curl -s -X POST http://127.0.0.1:8765/v1/eeg/compare -H "Content-Type: application/json" -d '{"session_a_file":"docs/examples/eyes-open.csv","session_b_file":"docs/examples/eyes-closed.csv","label_a":"eyes_open","label_b":"eyes_closed"}' | python -m json.tool
+```
+
+You'll get back:
+
+```jsonc
+{
+  "modality": "eeg",
+  "condition_a": "eyes_open",
+  "condition_b": "eyes_closed",
+  "profile": "skybrain_4ch",
+  "metrics_extracted": {
+    "count": 156,                          // every numeric metric we computed
+    "names": ["band_power_alpha", "band_power_beta", ... ]
+  },
+  "top_differences": [                     // top 15 by absolute %-change
+    {
+      "metric": "band_power_alpha",
+      "channel": "O1",
+      "value_a": 4.21,
+      "value_b": 12.67,
+      "delta": 8.46,
+      "percent_change": 200.95,
+      "direction": "increase_in_b"
+    },
+    // ... 14 more
+  ],
+  "summary": "Strong alpha-band power increase (201%) over occipital channel O1 in eyes_closed vs eyes_open — consistent with the classic Berger effect (posterior alpha rhythm modulation by visual input).",
+  "request_id": "...",
+  "input_sha256_a": "...",
+  "input_sha256_b": "...",
+  "latency_ms": 312.4
+}
+```
+
+The Berger effect (alpha rhythm doubling over occipital channels when eyes close) has been the canonical "is this EEG real?" test since 1929. If the summary line shows it, the whole pipeline — adapter → SDK → biomarker computation — is working end-to-end against real signals.
+
+---
+
 ## Step 9 — Inspect the audit log
 
 Every inference writes a single line to a daily JSON Lines file at

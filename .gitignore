@@ -41,7 +41,10 @@ audit/
 *.jsonl
 !service/tests/**/*.jsonl
 
-# Sample EEG payloads (binary, may be patient data — never commit)
+# Sample EEG payloads under samples/ — local scratch only.
+# Demo EDFs that ship with the repo live under docs/examples/ and are NOT
+# gitignored (they're educational fixtures, consistent with how PhysioNet
+# / OpenNeuro / BCI Competition share short EEG recordings).
 samples/*
 !samples/README.md
 
