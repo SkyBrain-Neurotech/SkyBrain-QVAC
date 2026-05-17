@@ -1,0 +1,157 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "skybrain-qvac-bci"
+version = "0.1.0"
+description = "Open-source FastAPI bridge from SkyBrain's proprietary EEG/BCI SDK to Tether's QVAC ecosystem"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "SkyBrain Neurotech", email = "info@skybrain.in" },
+]
+keywords = ["eeg", "bci", "qvac", "tether", "biomarkers", "openai-compatible"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "fastapi>=0.115,<1.0",
+    "uvicorn[standard]>=0.32,<1.0",
+    "pydantic>=2.9,<3.0",
+    "pydantic-settings>=2.5,<3.0",
+    "python-multipart>=0.0.12",
+]
+
+[project.optional-dependencies]
+sdk = [
+    # The proprietary SkyBrain SDK. Distribution name is skybrain-eeg-sdk;
+    # the import package is `skybrain_sdk`. Not on public PyPI — users with
+    # access install it manually (editable from a local checkout, or from
+    # SkyBrain's private wheel index). Pinned loosely so this bridge tolerates
+    # SDK minor-version bumps without churn.
+    "skybrain-eeg-sdk>=1.5,<2.0",
+]
+dev = [
+    "pytest>=8.3,<9.0",
+    "pytest-asyncio>=0.24,<1.0",
+    "httpx>=0.27,<1.0",                 # FastAPI TestClient transport
+    "ruff>=0.7,<1.0",
+    "black>=24.10,<26.0",
+    "mypy>=1.13,<2.0",
+    "pre-commit>=4.0,<5.0",
+    "import-linter>=2.1,<3.0",          # enforces adapter-as-sole-SDK-import-site
+]
+
+[project.urls]
+Homepage = "https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC"
+Repository = "https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC"
+Documentation = "https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC/tree/main/docs"
+Issues = "https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC/issues"
+Releases = "https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC/releases"
+
+[project.scripts]
+skybrain-qvac-bci = "service.main:run"
+
+[tool.hatch.build.targets.wheel]
+packages = ["service"]
+
+# ─── Ruff ────────────────────────────────────────────────────────────────────
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = ["docs/", "samples/", "audit/"]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W",      # pycodestyle + pyflakes
+    "I",                # isort
+    "N",                # pep8-naming
+    "UP",               # pyupgrade
+    "B",                # bugbear
+    "C4",               # comprehensions
+    "SIM",              # simplify
+    "RUF",              # ruff-specific
+]
+ignore = [
+    "E501",             # line-length handled by black
+    "B008",             # FastAPI's Depends() pattern
+    "UP042",            # StrEnum is 3.11+ but breaks Pydantic v2 enum-with-str-value compat
+    "RUF002",           # ambiguous unicode in docstrings (we use § and × intentionally)
+    "RUF003",           # same, in comments
+]
+
+[tool.ruff.lint.per-file-ignores]
+"service/tests/**/*.py" = ["B011"]
+
+# ─── Black ───────────────────────────────────────────────────────────────────
+[tool.black]
+line-length = 100
+target-version = ["py311", "py312"]
+
+# ─── mypy ────────────────────────────────────────────────────────────────────
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_any_unimported = false
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+# SkyBrain SDK has no published type stubs yet — silence missing-import errors
+# in the single adapter file rather than disabling strict typing globally.
+module = "skybrain_sdk.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "service.tests.*"
+disallow_untyped_decorators = false
+
+# ─── pytest ──────────────────────────────────────────────────────────────────
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["service/tests"]
+asyncio_mode = "auto"
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+]
+markers = [
+    "sdk: tests that require the proprietary skybrain-sdk to be installed",
+]
+
+# ─── import-linter ───────────────────────────────────────────────────────────
+# Enforces the "adapter is the ONLY skybrain_sdk import site" rule from the plan.
+[tool.importlinter]
+root_packages = ["service"]
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+# Direct-import check only: catches accidental `import skybrain_sdk` in a
+# non-adapter module. Indirect (transitive) paths via the dependency factory
+# are by design — get_adapter() is the legitimate way to reach the SDK.
+name = "Only service.adapters.skybrain_sdk may import skybrain_sdk"
+type = "forbidden"
+source_modules = [
+    "service.main",
+    "service.config",
+    "service.dependencies",
+    "service.endpoints",
+    "service.models",
+    "service.audit",
+    "service.adapters.protocol",
+]
+forbidden_modules = ["skybrain_sdk"]
+allow_indirect_imports = "true"

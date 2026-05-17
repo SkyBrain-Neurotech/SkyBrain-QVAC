@@ -1,0 +1,61 @@
+{
+  "//": "Phase 2 deliverable shape — NOT shipped in Phase 1. This file is informational; the actual @skybrain/qvac-bci-addon package will live in a separate JS/TS repo. Exports map follows the QVAC plugin convention extracted from docs/qvac-api-reference.md §5.",
+  "name": "@skybrain/qvac-bci-addon",
+  "version": "0.1.0",
+  "description": "QVAC SDK plugin that exposes SkyBrain EEG/BCI capabilities to QVAC consumers. Phase 2 of skybrain-qvac-bci.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SkyBrain-Neurotech/qvac-bci-addon"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/client/index.d.ts",
+      "import": "./dist/client/index.js"
+    },
+    "./plugin": {
+      "types": "./dist/plugin/index.d.ts",
+      "import": "./dist/plugin/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "lint": "eslint src",
+    "test": "vitest"
+  },
+  "peerDependencies": {
+    "@qvac/sdk": "^0.1.0"
+  },
+  "devDependencies": {
+    "@qvac/sdk": "^0.1.0",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0",
+    "zod": "^3.23.0"
+  },
+  "qvacPlugin": {
+    "//": "Custom namespace for SkyBrain-specific metadata. QVAC's docs don't currently parse this — included for our own bookkeeping until Week 2 alignment.",
+    "modelType": "skybrain-eeg",
+    "capability_id": "skybrain.eeg.biomarkers",
+    "handlers": [
+      "computeBiomarkers",
+      "classifyBCI",
+      "ingestStream",
+      "compareSessions",
+      "getCapabilities",
+      "getHealth"
+    ],
+    "backend_modes": [
+      "python-service",
+      "native-js"
+    ],
+    "default_backend": "python-service",
+    "python_service_url": "http://localhost:8765"
+  }
+}

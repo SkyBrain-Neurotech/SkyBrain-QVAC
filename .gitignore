@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+.eggs/
+build/
+dist/
+pip-wheel-metadata/
+share/python-wheels/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Test & type-checker caches
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# IDE / editor
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Audit logs (runtime artifacts — sensitive, never commit)
+audit/
+*.jsonl
+!service/tests/**/*.jsonl
+
+# Sample EEG payloads (binary, may be patient data — never commit)
+samples/*
+!samples/README.md
+
+# QVAC bridge plugin build artifacts (Phase 2)
+plugin-manifest/node_modules/
+plugin-manifest/dist/
+
+# OS / environment
+.env
+.env.local
+*.local
+
+# Logs
+*.log
+logs/
+
+# Internal docs — not for public repo.
+# Keep on disk locally; never push.
+docs/Cognitive Edge - CHAIN_ARCHITECTURE.md
+docs/Cognitive Edge - PRODUCT_SPEC.md
+docs/SkyBrain Analyze - README.md
+docs/SkyBrain BCI Studio - TETHER_APPLICATION_BRIEF.md
+docs/SkyBrain INFO.md

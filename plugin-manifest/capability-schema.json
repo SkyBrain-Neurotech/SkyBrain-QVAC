@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC/plugin-manifest/capability-schema.json",
+  "title": "SkyBrain QVAC-BCI capability schema",
+  "description": "JSON Schema describing the HTTP contract exposed by skybrain-qvac-bci on localhost:8765. Drives TypeScript client codegen for the Phase 2 @skybrain/qvac-bci-addon npm bridge plugin.",
+  "type": "object",
+  "required": ["service", "version", "modalities", "endpoints"],
+  "properties": {
+    "service": { "const": "skybrain-qvac-bci" },
+    "version": { "type": "string", "description": "Semver" },
+    "modalities": {
+      "type": "array",
+      "items": { "enum": ["eeg", "ecg", "ppg", "multimodal"] },
+      "description": "Phase 1 ships eeg only; the enum reserves namespace for later phases."
+    },
+    "endpoints": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Endpoint" }
+    }
+  },
+  "$defs": {
+    "Endpoint": {
+      "type": "object",
+      "required": ["path", "method", "status", "request_schema", "response_schema"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^/v1/" },
+        "method": { "enum": ["GET", "POST", "DELETE"] },
+        "status": { "enum": ["live", "stub_501"], "description": "Phase 1 stubs return 501 with a not_implemented envelope." },
+        "request_schema": { "type": ["object", "null"], "description": "Pydantic-derived JSON Schema, or null for GETs." },
+        "response_schema": { "type": "object", "description": "Pydantic-derived JSON Schema for the 200 response." },
+        "qvac_plugin_handler": {
+          "type": "string",
+          "description": "Name of the handler in the Phase 2 npm bridge plugin that wraps this endpoint."
+        }
+      }
+    }
+  },
+  "endpoints": [
+    {
+      "path": "/v1/health",
+      "method": "GET",
+      "status": "live",
+      "request_schema": null,
+      "response_schema": { "$ref": "service/models/common.py#HealthResponse" },
+      "qvac_plugin_handler": "getHealth"
+    },
+    {
+      "path": "/v1/capabilities",
+      "method": "GET",
+      "status": "live",
+      "request_schema": null,
+      "response_schema": { "$ref": "service/models/capabilities.py#CapabilitiesResponse" },
+      "qvac_plugin_handler": "getCapabilities"
+    },
+    {
+      "path": "/v1/eeg/biomarkers",
+      "method": "POST",
+      "status": "live",
+      "request_schema": { "$ref": "service/models/biomarkers.py#BiomarkerRequest" },
+      "response_schema": { "$ref": "service/models/biomarkers.py#BiomarkerResponse" },
+      "qvac_plugin_handler": "computeBiomarkers"
+    },
+    {
+      "path": "/v1/bci/classify",
+      "method": "POST",
+      "status": "stub_501",
+      "request_schema": null,
+      "response_schema": { "$ref": "service/models/common.py#ErrorResponse" },
+      "qvac_plugin_handler": "classifyBCI"
+    },
+    {
+      "path": "/v1/eeg/ingest",
+      "method": "POST",
+      "status": "stub_501",
+      "request_schema": null,
+      "response_schema": { "$ref": "service/models/common.py#ErrorResponse" },
+      "qvac_plugin_handler": "ingestStream"
+    },
+    {
+      "path": "/v1/eeg/compare",
+      "method": "POST",
+      "status": "stub_501",
+      "request_schema": null,
+      "response_schema": { "$ref": "service/models/common.py#ErrorResponse" },
+      "qvac_plugin_handler": "compareSessions"
+    }
+  ]
+}
