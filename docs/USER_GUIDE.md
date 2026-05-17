@@ -111,21 +111,29 @@ lint tools.
 
 The SkyBrain SDK is **proprietary and distribution-gated** — you can't
 `pip install` it from PyPI, and the wheel is not attached to public
-GitHub releases. To request access:
+GitHub releases. SkyBrain distributes it through a separate **private
+GitHub repo** that you'll be added to once your request is approved.
+
+### Request access
 
 1. Email **info@skybrain.in** with:
    - Your name and organisation
    - Intended use (evaluation, research, commercial integration, etc.)
-   - Your GitHub handle if you'd like to be added to the SkyBrain
-     contributor list
-2. You'll receive a download URL for the latest
-   `skybrain_eeg_sdk-X.Y.Z-py3-none-any.whl` file (about 5 MB).
+   - **Your GitHub handle** — required so you can be invited
+2. SkyBrain typically responds within 1-2 business days. You'll get a
+   GitHub notification inviting you as a Read collaborator on
+   `SkyBrain-Neurotech/skybrain-sdk-releases`.
+3. Accept the invite from your GitHub notifications page.
 
-Once you have the wheel:
+### Install the wheel
 
 ```powershell
-# Replace 1.5.0 with the version you received
-pip install C:\path\to\skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+# 1. Clone the private SDK repo (only works once you've accepted the invite)
+git clone https://github.com/SkyBrain-Neurotech/skybrain-sdk-releases.git
+
+# 2. Install the wheel from there into THIS bridge's venv
+#    (make sure the venv is activated — your prompt should show (.venv))
+pip install .\skybrain-sdk-releases\wheels\skybrain_eeg_sdk-1.5.0-py3-none-any.whl
 ```
 
 Verify it worked:

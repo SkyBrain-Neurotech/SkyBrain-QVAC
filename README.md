@@ -253,22 +253,36 @@ see [`ci/github-actions/ci.yml`](ci/github-actions/ci.yml).
 
 This bridge is open-source under Apache 2.0. The **SkyBrain SDK** that
 performs the actual signal processing is **proprietary** and
-distributed under separate commercial terms. Two layers of access
-control:
+distributed under separate commercial terms.
 
-1. **Wheel distribution is gated.** The `skybrain_eeg_sdk-*.whl` file
-   is not publicly downloadable. To request access for evaluation,
-   research, or commercial integration, email **info@skybrain.in**
-   with your name, organisation, and intended use. Approved requestors
-   receive a download URL.
-2. **Runtime license tiers (inside the wheel).** Once installed, most
-   endpoints in this bridge work without any further configuration —
-   `/v1/health`, `/v1/capabilities`, and `/v1/eeg/biomarkers` (across
-   the `spectral`, `qc`, `advanced`, `full` bundles) run on the SDK's
-   default tier. Advanced features (full BCI classifier inference,
-   clinical-grade analysis suites) require a license key bound to your
-   hardware fingerprint; those keys are issued alongside the wheel for
-   approved commercial users.
+### How to get the SDK
+
+1. Email **info@skybrain.in** with:
+   - Your name and organisation
+   - Intended use (evaluation, research, commercial integration)
+   - Your GitHub handle
+2. Approved requestors are added as Read collaborators to a private
+   distribution repo (`SkyBrain-Neurotech/skybrain-sdk-releases`).
+3. Accept the GitHub invitation from your notifications.
+4. Clone that repo and install the wheel:
+   ```bash
+   git clone https://github.com/SkyBrain-Neurotech/skybrain-sdk-releases.git
+   pip install ./skybrain-sdk-releases/wheels/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+   ```
+
+Typical response time: 1-2 business days for evaluation /
+research access. Commercial inquiries handled directly by the founder.
+
+### What works after install
+
+`/v1/eeg/biomarkers` across the `spectral`, `qc`, `advanced`, and
+`full` bundles, plus the discovery endpoints, run on the SDK's
+**default tier — no license key needed**.
+
+Advanced features (full BCI classifier inference, clinical-grade
+analysis suites, multi-channel adaptive pipelines) require a key bound
+to your hardware fingerprint. Those keys are issued per-party at
+request time; ask via `info@skybrain.in`.
 
 ### What works without the SDK installed
 
