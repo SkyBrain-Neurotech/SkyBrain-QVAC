@@ -107,14 +107,24 @@ lint tools.
 
 ---
 
-## Step 4 — Install the SkyBrain SDK
+## Step 4 — Request and install the SkyBrain SDK
 
-Go to the [Releases page](https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC/releases),
-download the latest `skybrain_eeg_sdk-X.Y.Z-py3-none-any.whl`, and
-install it:
+The SkyBrain SDK is **proprietary and distribution-gated** — you can't
+`pip install` it from PyPI, and the wheel is not attached to public
+GitHub releases. To request access:
+
+1. Email **info@skybrain.in** with:
+   - Your name and organisation
+   - Intended use (evaluation, research, commercial integration, etc.)
+   - Your GitHub handle if you'd like to be added to the SkyBrain
+     contributor list
+2. You'll receive a download URL for the latest
+   `skybrain_eeg_sdk-X.Y.Z-py3-none-any.whl` file (about 5 MB).
+
+Once you have the wheel:
 
 ```powershell
-# Replace 1.5.0 with whatever version you downloaded
+# Replace 1.5.0 with the version you received
 pip install C:\path\to\skybrain_eeg_sdk-1.5.0-py3-none-any.whl
 ```
 
@@ -126,10 +136,24 @@ python -c "import skybrain_sdk; print('SDK', skybrain_sdk.__version__, 'OK')"
 
 You should see `SDK 1.5.0 OK` (or your version number).
 
+> **What can I do without the SDK?** Set the environment variable
+> `SKYBRAIN_QVAC_REQUIRE_SDK=false` before starting the service.
+> `GET /v1/health` and `GET /v1/capabilities` will still work — useful
+> for inspecting the API surface or browsing the OpenAPI docs at
+> `http://127.0.0.1:8765/docs`. Inference endpoints will return a
+> clear `sdk_unavailable` error envelope instead of a stack trace.
+
 > **Permission denied / can't find the wheel?** Make sure you're in
 > the activated venv (your prompt shows `(.venv)`) and that the path
 > to the wheel is right. On Windows, use forward slashes or
 > double-backslashes in the path.
+
+> **Will I need a license key?** For the default endpoints
+> (`/v1/eeg/biomarkers` with `spectral`, `qc`, `advanced`, or `full`),
+> no. The SDK ships with a default tier that covers these. Advanced
+> classifier features and clinical-grade pipelines require a paid
+> license key bound to your hardware fingerprint; it's issued together
+> with the wheel for approved commercial users.
 
 ---
 

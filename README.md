@@ -94,15 +94,20 @@ Full beginner walkthrough in **[docs/USER_GUIDE.md](docs/USER_GUIDE.md)**.
 git clone https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC.git
 cd SkyBrain-QVAC
 
-# 2. Install (downloads SDK wheel from this repo's GitHub release)
+# 2. Install the open-source bridge
 python -m venv .venv
 .venv/Scripts/activate    # PowerShell:  .\.venv\Scripts\Activate.ps1
 pip install -e ".[dev]"
-pip install https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC/releases/latest/download/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
 
-# 3. Run
+# 3. Install the SkyBrain SDK (proprietary, distribution-gated)
+#    Request access at info@skybrain.in — you'll receive a wheel file.
+pip install /path/to/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+
+# 4. Run
 python -m service.main
 ```
+
+See **[SDK access](#sdk-access)** below for what works without the SDK installed.
 
 In another shell, try the live endpoints. **Important — Windows users:** `curl` in PowerShell is aliased to `Invoke-WebRequest` (different flag set); cmd.exe's curl needs escaped double quotes. Pick the form for your shell.
 
@@ -244,11 +249,44 @@ lint-imports           # architecture boundary
 CI runs the full sweep on macOS, Ubuntu, and Windows for Python 3.11 + 3.12 —
 see [`ci/github-actions/ci.yml`](ci/github-actions/ci.yml).
 
+## SDK access
+
+This bridge is open-source under Apache 2.0. The **SkyBrain SDK** that
+performs the actual signal processing is **proprietary** and
+distributed under separate commercial terms. Two layers of access
+control:
+
+1. **Wheel distribution is gated.** The `skybrain_eeg_sdk-*.whl` file
+   is not publicly downloadable. To request access for evaluation,
+   research, or commercial integration, email **info@skybrain.in**
+   with your name, organisation, and intended use. Approved requestors
+   receive a download URL.
+2. **Runtime license tiers (inside the wheel).** Once installed, most
+   endpoints in this bridge work without any further configuration —
+   `/v1/health`, `/v1/capabilities`, and `/v1/eeg/biomarkers` (across
+   the `spectral`, `qc`, `advanced`, `full` bundles) run on the SDK's
+   default tier. Advanced features (full BCI classifier inference,
+   clinical-grade analysis suites) require a license key bound to your
+   hardware fingerprint; those keys are issued alongside the wheel for
+   approved commercial users.
+
+### What works without the SDK installed
+
+If you set `SKYBRAIN_QVAC_REQUIRE_SDK=false`, the service still boots
+and these endpoints respond:
+
+- `GET /v1/health` (reports `sdk_version: "unavailable"`)
+- `GET /v1/capabilities` (static catalogue from `docs/capabilities.md`)
+- All six routes return correctly-shaped error envelopes
+
+Inference endpoints (`/v1/eeg/biomarkers`, etc.) will fail with a
+clear `sdk_unavailable` message rather than a stack trace. Useful for
+docs review, OpenAPI introspection at `/docs`, and integration
+testing of clients that haven't been granted SDK access yet.
+
 ## License
 
 [Apache 2.0](LICENSE).
 
 The proprietary `skybrain-eeg-sdk` package is licensed separately by
-SkyBrain Neurotech and is **not bundled** with this repository. The SDK
-is distributed as a versioned wheel on this repo's GitHub Releases
-page; obtaining access requires a SkyBrain license.
+SkyBrain Neurotech and is **not bundled** with this repository.
