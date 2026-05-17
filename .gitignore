@@ -65,3 +65,6 @@ docs/Cognitive Edge - PRODUCT_SPEC.md
 docs/SkyBrain Analyze - README.md
 docs/SkyBrain BCI Studio - TETHER_APPLICATION_BRIEF.md
 docs/SkyBrain INFO.md
+
+# Grant application artifacts (local-only; PDFs are derived from docs/*.md)
+application/

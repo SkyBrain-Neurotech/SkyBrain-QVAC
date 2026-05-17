@@ -7,6 +7,10 @@
 
 ---
 
+> **Status — May 2026.** A reference implementation of the Phase 1 deliverables is already live and public at **https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC** under Apache 2.0. Three of six endpoints (`/v1/health`, `/v1/capabilities`, `/v1/eeg/biomarkers` across five biomarker bundles) are functional end-to-end against the real SkyBrain SDK 1.5.0. Thirteen tests pass; cross-platform GitHub Actions CI is scaffolded for macOS, Linux, and Windows on Python 3.11 and 3.12; SHA-256 input hashing and timestamped JSON Lines audit logging are wired per the CDSCO-compliance commitment. Warm-cache latency on a 30-second, 4-channel recording: 125 ms for spectral biomarkers, 140 ms for full analysis — well inside the sub-200 ms budget stated below. This grant funds the remaining 9 weeks of Phase 1 (the three scaffolded endpoints, Cognitive Edge integration, reference Jupyter notebook, cross-platform verification, demo). The bridge architecture, the SDK adapter boundary, and the QVAC plugin design package are reviewable today.
+
+---
+
 ## The opportunity in one paragraph
 
 On April 9, 2026, Paolo Ardoino committed Tether to expanding the QVAC ecosystem with "toolkits specifically designed for robotics and brain-computer interfaces." SkyBrain Neurotech proposes to build the BCI toolkit. We are a CE-certified non-invasive EEG platform deployed in three Indian universities, with a working SDK, a hardware-agnostic analysis application, a published research backbone, and a partnership with BrainBit (Europe's CE-certified non-invasive BCI hardware leader). We have already built independently most of what QVAC needs to add brain-computer interface as a first-class capability. We are proposing a coordinated two-phase contribution to ship this into the QVAC ecosystem under open-source license, with SkyBrain remaining the proprietary platform that drives upstream development.

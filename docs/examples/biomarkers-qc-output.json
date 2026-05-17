@@ -1,0 +1,23 @@
+﻿{
+    "modality":  "eeg",
+    "biomarker_set":  "qc",
+    "profile":  "skybrain_4ch",
+    "kind":  "qc",
+    "payload":  {
+                    "is_pass":  true,
+                    "issues":  [
+
+                               ],
+                    "bad_channels":  [
+
+                                     ],
+                    "summary_score":  1.0,
+                    "timestamp":  "2026-05-17T19:45:22.726883"
+                },
+    "request_id":  "d14d89f1-4c07-4d79-9277-02a0837c6169",
+    "input_sha256":  "a5ff6f4a817048b25757cc7a5e92a972d24b70e32462bb2910ae5ccde10a8a7c",
+    "latency_ms":  14.617,
+    "warnings":  [
+
+                 ]
+}

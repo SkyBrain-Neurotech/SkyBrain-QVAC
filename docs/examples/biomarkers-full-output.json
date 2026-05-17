@@ -1,0 +1,399 @@
+﻿{
+    "modality":  "eeg",
+    "biomarker_set":  "full",
+    "profile":  "skybrain_4ch",
+    "kind":  "analysis",
+    "payload":  {
+                    "recording_metadata":  {
+                                               "channel_names":  [
+                                                                     "Fp1",
+                                                                     "Fp2",
+                                                                     "O1",
+                                                                     "O2"
+                                                                 ],
+                                               "sampling_rate":  256.0,
+                                               "start_time":  "2026-05-17T18:41:00",
+                                               "file_path":  "D:\\Workspace\\May\\QVAC - BCI\\samples\\smoke.edf",
+                                               "file_hash":  "a5ff6f4a817048b25757cc7a5e92a972d24b70e32462bb2910ae5ccde10a8a7c",
+                                               "file_size_bytes":  66396,
+                                               "device_type":  null,
+                                               "original_channel_names":  [
+                                                                              "Fp1",
+                                                                              "Fp2",
+                                                                              "O1",
+                                                                              "O2"
+                                                                          ],
+                                               "channel_name_mapping":  {
+                                                                            "Fp1":  "Fp1",
+                                                                            "Fp2":  "Fp2",
+                                                                            "O1":  "O1",
+                                                                            "O2":  "O2"
+                                                                        },
+                                               "channel_mismatch":  {
+                                                                        "missing_channels":  [
+                                                                                                 "A1",
+                                                                                                 "A2",
+                                                                                                 "C3",
+                                                                                                 "C4",
+                                                                                                 "CZ",
+                                                                                                 "F3",
+                                                                                                 "F4",
+                                                                                                 "F7",
+                                                                                                 "F8",
+                                                                                                 "FP1",
+                                                                                                 "FP2",
+                                                                                                 "FZ",
+                                                                                                 "P3",
+                                                                                                 "P4",
+                                                                                                 "PZ",
+                                                                                                 "T3",
+                                                                                                 "T4",
+                                                                                                 "T5",
+                                                                                                 "T6"
+                                                                                             ],
+                                                                        "extra_channels":  [
+                                                                                               "Fp1",
+                                                                                               "Fp2"
+                                                                                           ],
+                                                                        "expected_set":  "10-20-full"
+                                                                    },
+                                               "patient_info":  "Test Subject",
+                                               "recording_info":  "",
+                                               "edf_version":  "EDF"
+                                           },
+                    "qc_report":  {
+                                      "is_pass":  true,
+                                      "issues":  [
+
+                                                 ],
+                                      "bad_channels":  [
+
+                                                       ],
+                                      "summary_score":  1.0,
+                                      "timestamp":  "2026-05-17T19:45:22.842948"
+                                  },
+                    "features":  {
+                                     "channel_features":  {
+                                                              "Fp1":  {
+                                                                          "mean":  0.005687194602414837,
+                                                                          "variance":  22.445620042437028,
+                                                                          "std":  4.737680871738516,
+                                                                          "rms":  4.737684285240995,
+                                                                          "band_power_delta":  0.008889396013762691,
+                                                                          "band_power_theta":  3.561393140832357,
+                                                                          "band_power_alpha":  15.606359726774809,
+                                                                          "band_power_beta":  2.008837411105529,
+                                                                          "band_power_gamma":  0.4669622713022847,
+                                                                          "relative_band_power_delta":  0.041054935216640026,
+                                                                          "relative_band_power_theta":  16.447997642527103,
+                                                                          "relative_band_power_alpha":  72.0766727636333,
+                                                                          "relative_band_power_beta":  9.277648295341432,
+                                                                          "relative_band_power_gamma":  2.156626363281532,
+                                                                          "total_power":  21.65244194602874,
+                                                                          "beta_alpha_ratio":  0.1287191533627857,
+                                                                          "theta_beta_ratio":  1.7728628116659804,
+                                                                          "delta_peak_freq":  3.0,
+                                                                          "delta_peak_power":  0.008898130593260322,
+                                                                          "delta_abs_power":  0.008889396013762691,
+                                                                          "delta_rel_power":  0.041054935216640026,
+                                                                          "theta_peak_freq":  6.0,
+                                                                          "theta_peak_power":  2.302381946578496,
+                                                                          "theta_abs_power":  3.561393140832357,
+                                                                          "theta_rel_power":  16.447997642527103,
+                                                                          "alpha_peak_freq":  10.0,
+                                                                          "alpha_peak_power":  8.199760162055732,
+                                                                          "alpha_abs_power":  15.606359726774809,
+                                                                          "alpha_rel_power":  72.0766727636333,
+                                                                          "beta_peak_freq":  22.0,
+                                                                          "beta_peak_power":  1.0075281217149141,
+                                                                          "beta_abs_power":  2.008837411105529,
+                                                                          "beta_rel_power":  9.277648295341432,
+                                                                          "gamma_peak_freq":  45.0,
+                                                                          "gamma_peak_power":  0.20428605395233987,
+                                                                          "gamma_abs_power":  0.4669622713022847,
+                                                                          "gamma_rel_power":  2.156626363281532,
+                                                                          "spectral_sef95":  22.0,
+                                                                          "spectral_median_freq":  10.0,
+                                                                          "spectral_total_power":  21.65244194602874,
+                                                                          "hjorth_activity":  22.445620042437028,
+                                                                          "hjorth_mobility":  0.31370592734492403,
+                                                                          "hjorth_complexity":  1.9967647534038837,
+                                                                          "sample_entropy":  1.472567618544063,
+                                                                          "perm_entropy":  0.2047561032355634
+                                                                      },
+                                                              "Fp2":  {
+                                                                          "mean":  -0.0005939131978475583,
+                                                                          "variance":  26.018689224590776,
+                                                                          "std":  5.100851813627875,
+                                                                          "rms":  5.100851848203755,
+                                                                          "band_power_delta":  0.006293699079255446,
+                                                                          "band_power_theta":  4.7976557207004795,
+                                                                          "band_power_alpha":  18.49608881595884,
+                                                                          "band_power_beta":  1.5920891406643913,
+                                                                          "band_power_gamma":  0.3802521833979976,
+                                                                          "relative_band_power_delta":  0.024903468485675966,
+                                                                          "relative_band_power_theta":  18.983791017177428,
+                                                                          "relative_band_power_alpha":  73.18696987829075,
+                                                                          "relative_band_power_beta":  6.299719964624219,
+                                                                          "relative_band_power_gamma":  1.5046156714219292,
+                                                                          "total_power":  25.27237955980096,
+                                                                          "beta_alpha_ratio":  0.08607707048263638,
+                                                                          "theta_beta_ratio":  3.013434108782615,
+                                                                          "delta_peak_freq":  3.0,
+                                                                          "delta_peak_power":  0.007832476511125659,
+                                                                          "delta_abs_power":  0.006293699079255446,
+                                                                          "delta_rel_power":  0.024903468485675966,
+                                                                          "theta_peak_freq":  6.0,
+                                                                          "theta_peak_power":  3.37238523681669,
+                                                                          "theta_abs_power":  4.7976557207004795,
+                                                                          "theta_rel_power":  18.983791017177428,
+                                                                          "alpha_peak_freq":  10.0,
+                                                                          "alpha_peak_power":  10.944718877104014,
+                                                                          "alpha_abs_power":  18.49608881595884,
+                                                                          "alpha_rel_power":  73.18696987829075,
+                                                                          "beta_peak_freq":  21.0,
+                                                                          "beta_peak_power":  0.7351749670972451,
+                                                                          "beta_abs_power":  1.5920891406643913,
+                                                                          "beta_rel_power":  6.299719964624219,
+                                                                          "gamma_peak_freq":  45.0,
+                                                                          "gamma_peak_power":  0.14293583313859143,
+                                                                          "gamma_abs_power":  0.3802521833979976,
+                                                                          "gamma_rel_power":  1.5046156714219292,
+                                                                          "spectral_sef95":  21.0,
+                                                                          "spectral_median_freq":  10.0,
+                                                                          "spectral_total_power":  25.27237955980096,
+                                                                          "hjorth_activity":  26.018689224590776,
+                                                                          "hjorth_mobility":  0.2894009119535739,
+                                                                          "hjorth_complexity":  2.0222916738241516,
+                                                                          "sample_entropy":  1.5240116116770912,
+                                                                          "perm_entropy":  0.20412815608525295
+                                                                      },
+                                                              "O1":  {
+                                                                         "mean":  -0.002112428389265855,
+                                                                         "variance":  42.018013952755005,
+                                                                         "std":  6.482130356044609,
+                                                                         "rms":  6.482130700248854,
+                                                                         "band_power_delta":  0.009007638608097336,
+                                                                         "band_power_theta":  4.444213184856691,
+                                                                         "band_power_alpha":  35.14476485835436,
+                                                                         "band_power_beta":  1.5923845087762603,
+                                                                         "band_power_gamma":  0.3480414761005796,
+                                                                         "relative_band_power_delta":  0.021685081943851357,
+                                                                         "relative_band_power_theta":  10.699044586771965,
+                                                                         "relative_band_power_alpha":  84.60786883320378,
+                                                                         "relative_band_power_beta":  3.833522864459878,
+                                                                         "relative_band_power_gamma":  0.8378786336205215,
+                                                                         "total_power":  41.538411666695986,
+                                                                         "beta_alpha_ratio":  0.045309294718406126,
+                                                                         "theta_beta_ratio":  2.7909171185494936,
+                                                                         "delta_peak_freq":  3.0,
+                                                                         "delta_peak_power":  0.008476557208885698,
+                                                                         "delta_abs_power":  0.009007638608097336,
+                                                                         "delta_rel_power":  0.021685081943851357,
+                                                                         "theta_peak_freq":  6.0,
+                                                                         "theta_peak_power":  3.1423381298191826,
+                                                                         "theta_abs_power":  4.444213184856691,
+                                                                         "theta_rel_power":  10.699044586771965,
+                                                                         "alpha_peak_freq":  10.0,
+                                                                         "alpha_peak_power":  20.497714436089318,
+                                                                         "alpha_abs_power":  35.14476485835436,
+                                                                         "alpha_rel_power":  84.60786883320378,
+                                                                         "beta_peak_freq":  21.0,
+                                                                         "beta_peak_power":  0.6522827997336486,
+                                                                         "beta_abs_power":  1.5923845087762603,
+                                                                         "beta_rel_power":  3.833522864459878,
+                                                                         "gamma_peak_freq":  45.0,
+                                                                         "gamma_peak_power":  0.12948153502759338,
+                                                                         "gamma_abs_power":  0.3480414761005796,
+                                                                         "gamma_rel_power":  0.8378786336205215,
+                                                                         "spectral_sef95":  12.0,
+                                                                         "spectral_median_freq":  10.0,
+                                                                         "spectral_total_power":  41.538411666695986,
+                                                                         "hjorth_activity":  42.018013952755005,
+                                                                         "hjorth_mobility":  0.2751165190960741,
+                                                                         "hjorth_complexity":  1.7808920754159618,
+                                                                         "sample_entropy":  1.2612415873509202,
+                                                                         "perm_entropy":  0.20235266302529278
+                                                                     },
+                                                              "O2":  {
+                                                                         "mean":  -0.0029808530153014453,
+                                                                         "variance":  43.400211156222895,
+                                                                         "std":  6.587883662924148,
+                                                                         "rms":  6.587884337304928,
+                                                                         "band_power_delta":  0.010307870799201774,
+                                                                         "band_power_theta":  3.0205372976456344,
+                                                                         "band_power_alpha":  37.438300791465416,
+                                                                         "band_power_beta":  2.089976217451241,
+                                                                         "band_power_gamma":  0.3725100058559587,
+                                                                         "relative_band_power_delta":  0.024009967185061414,
+                                                                         "relative_band_power_theta":  7.035691736002534,
+                                                                         "relative_band_power_alpha":  87.20446646820139,
+                                                                         "relative_band_power_beta":  4.868149919229581,
+                                                                         "relative_band_power_gamma":  0.8676819093814419,
+                                                                         "total_power":  42.931632183217445,
+                                                                         "beta_alpha_ratio":  0.05582454794336394,
+                                                                         "theta_beta_ratio":  1.4452496025668786,
+                                                                         "delta_peak_freq":  1.0,
+                                                                         "delta_peak_power":  0.011536535405160071,
+                                                                         "delta_abs_power":  0.010307870799201774,
+                                                                         "delta_rel_power":  0.024009967185061414,
+                                                                         "theta_peak_freq":  6.0,
+                                                                         "theta_peak_power":  2.1328262541340814,
+                                                                         "theta_abs_power":  3.0205372976456344,
+                                                                         "theta_rel_power":  7.035691736002534,
+                                                                         "alpha_peak_freq":  10.0,
+                                                                         "alpha_peak_power":  20.253999108875362,
+                                                                         "alpha_abs_power":  37.438300791465416,
+                                                                         "alpha_rel_power":  87.20446646820139,
+                                                                         "beta_peak_freq":  22.0,
+                                                                         "beta_peak_power":  0.9792224140100662,
+                                                                         "beta_abs_power":  2.089976217451241,
+                                                                         "beta_rel_power":  4.868149919229581,
+                                                                         "gamma_peak_freq":  45.0,
+                                                                         "gamma_peak_power":  0.14005768726492074,
+                                                                         "gamma_abs_power":  0.3725100058559587,
+                                                                         "gamma_rel_power":  0.8676819093814419,
+                                                                         "spectral_sef95":  21.0,
+                                                                         "spectral_median_freq":  10.0,
+                                                                         "spectral_total_power":  42.931632183217445,
+                                                                         "hjorth_activity":  43.400211156222895,
+                                                                         "hjorth_mobility":  0.2840724229855795,
+                                                                         "hjorth_complexity":  1.7359926973323199,
+                                                                         "sample_entropy":  1.2402524784065847,
+                                                                         "perm_entropy":  0.2029314568238983
+                                                                     }
+                                                          },
+                                     "global_features":  {
+                                                             "avg_band_power_delta":  0.008624651125079312,
+                                                             "avg_band_power_theta":  3.9559498360087906,
+                                                             "avg_band_power_alpha":  26.671378548138357,
+                                                             "avg_band_power_beta":  1.8208218194993555,
+                                                             "avg_band_power_gamma":  0.39194148416420516,
+                                                             "posterior_dominant_frequency":  10.366666666666667,
+                                                             "avg_mean":  -5.4210108624275222E-18,
+                                                             "avg_variance":  33.47063359400143,
+                                                             "avg_rms":  5.727137792749633,
+                                                             "alpha_present":  true,
+                                                             "frontal_alpha_asymmetry_fp1_fp2":  0.16988078840736875,
+                                                             "occipital_alpha_asymmetry_o1_o2":  0.06321859574511635,
+                                                             "avg_beta_alpha_ratio":  0.07898251662679803,
+                                                             "avg_theta_beta_ratio":  2.255615910391242,
+                                                             "frontal_beta_alpha_ratio":  0.10739811192271104,
+                                                             "frontal_theta_beta_ratio":  2.393148460224298
+                                                         },
+                                     "windows":  null,
+                                     "computation_params":  {
+                                                                "bands":  {
+                                                                              "delta":  [
+                                                                                            0.5,
+                                                                                            4.0
+                                                                                        ],
+                                                                              "theta":  [
+                                                                                            4.0,
+                                                                                            8.0
+                                                                                        ],
+                                                                              "alpha":  [
+                                                                                            8.0,
+                                                                                            13.0
+                                                                                        ],
+                                                                              "beta":  [
+                                                                                           13.0,
+                                                                                           30.0
+                                                                                       ],
+                                                                              "gamma":  [
+                                                                                            30.0,
+                                                                                            60.0
+                                                                                        ]
+                                                                          },
+                                                                "posterior_channels":  [
+                                                                                           "O1",
+                                                                                           "O2"
+                                                                                       ],
+                                                                "sampling_rate":  256.0
+                                                            }
+                                 },
+                    "summary":  {
+                                    "recording_duration_sec":  30.0,
+                                    "qc_passed":  true,
+                                    "num_bad_channels":  0,
+                                    "artifact_duration_sec":  0.0,
+                                    "dominant_frequency_hz":  10.366666666666667,
+                                    "alpha_present":  true,
+                                    "additional_metrics":  {
+
+                                                           }
+                                },
+                    "annotations":  [
+
+                                    ],
+                    "sdk_version":  "1.5.0",
+                    "profile_name":  "skybrain_4ch",
+                    "profile_hash":  "ecbadd63e9fbeab7b65a688efb0a317cf207434392b93d1d788a5a639002d29c",
+                    "timestamp":  "2026-05-17T19:45:22.982728",
+                    "profile_config":  {
+                                           "name":  "skybrain_4ch",
+                                           "version":  "1.0.0",
+                                           "filters":  {
+                                                           "highpass_cutoff":  4.0,
+                                                           "lowpass_cutoff":  70.0,
+                                                           "notch_freq":  null,
+                                                           "notch_freqs":  [
+                                                                               50.0,
+                                                                               60.0
+                                                                           ],
+                                                           "filter_order":  4
+                                                       },
+                                           "reference":  {
+                                                             "reference_type":  "average",
+                                                             "reference_channels":  null
+                                                         },
+                                           "window_length_sec":  4.0,
+                                           "qc_thresholds":  {
+                                                                 "flatline_variance_threshold":  1E-06,
+                                                                 "saturation_amplitude":  1000.0,
+                                                                 "noise_variance_threshold":  1000.0,
+                                                                 "max_bad_channels":  2,
+                                                                 "min_duration_sec":  10.0,
+                                                                 "max_duration_sec":  7200.0
+                                                             },
+                                           "feature_params":  {
+                                                                  "bands":  {
+                                                                                "delta":  [
+                                                                                              0.5,
+                                                                                              4.0
+                                                                                          ],
+                                                                                "theta":  [
+                                                                                              4.0,
+                                                                                              8.0
+                                                                                          ],
+                                                                                "alpha":  [
+                                                                                              8.0,
+                                                                                              13.0
+                                                                                          ],
+                                                                                "beta":  [
+                                                                                             13.0,
+                                                                                             30.0
+                                                                                         ],
+                                                                                "gamma":  [
+                                                                                              30.0,
+                                                                                              60.0
+                                                                                          ]
+                                                                            },
+                                                                  "posterior_channels":  [
+                                                                                             "O1",
+                                                                                             "O2"
+                                                                                         ],
+                                                                  "exclude_bands":  [
+
+                                                                                    ]
+                                                              },
+                                           "include_deprecated_metrics":  false
+                                       }
+                },
+    "request_id":  "2b7985c4-f8b9-440a-94ed-08e4a0e00189",
+    "input_sha256":  "a5ff6f4a817048b25757cc7a5e92a972d24b70e32462bb2910ae5ccde10a8a7c",
+    "latency_ms":  246.242,
+    "warnings":  [
+
+                 ]
+}
