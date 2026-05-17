@@ -262,12 +262,12 @@ distributed under separate commercial terms.
    - Intended use (evaluation, research, commercial integration)
    - Your GitHub handle
 2. Approved requestors are added as Read collaborators to a private
-   distribution repo (`SkyBrain-Neurotech/skybrain-sdk-releases`).
+   distribution repo (`SkyBrain-Neurotech/sdk-release`).
 3. Accept the GitHub invitation from your notifications.
 4. Clone that repo and install the wheel:
    ```bash
-   git clone https://github.com/SkyBrain-Neurotech/skybrain-sdk-releases.git
-   pip install ./skybrain-sdk-releases/wheels/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+   git clone https://github.com/SkyBrain-Neurotech/sdk-release.git
+   pip install ./sdk-release/wheels/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
    ```
 
 Typical response time: 1-2 business days for evaluation /

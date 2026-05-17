@@ -122,18 +122,18 @@ GitHub repo** that you'll be added to once your request is approved.
    - **Your GitHub handle** — required so you can be invited
 2. SkyBrain typically responds within 1-2 business days. You'll get a
    GitHub notification inviting you as a Read collaborator on
-   `SkyBrain-Neurotech/skybrain-sdk-releases`.
+   `SkyBrain-Neurotech/sdk-release`.
 3. Accept the invite from your GitHub notifications page.
 
 ### Install the wheel
 
 ```powershell
 # 1. Clone the private SDK repo (only works once you've accepted the invite)
-git clone https://github.com/SkyBrain-Neurotech/skybrain-sdk-releases.git
+git clone https://github.com/SkyBrain-Neurotech/sdk-release.git
 
 # 2. Install the wheel from there into THIS bridge's venv
 #    (make sure the venv is activated — your prompt should show (.venv))
-pip install .\skybrain-sdk-releases\wheels\skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+pip install .\sdk-release\wheels\skybrain_eeg_sdk-1.5.0-py3-none-any.whl
 ```
 
 Verify it worked:
