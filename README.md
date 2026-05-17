@@ -178,7 +178,7 @@ curl -s -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: applic
 | `GET /v1/health` | **live** | Liveness + SDK version |
 | `GET /v1/capabilities` | **live** | 7 paradigms × 5 classifiers × 5 biomarker sets |
 | `POST /v1/eeg/biomarkers` | **live** | `spectral · cognitive · qc · advanced · full`; `view=summary` (default) or `view=detailed` |
-| `POST /v1/eeg/compare` | **live** | Two-file differential. Returns metric names + top 15 diffs ranked by %-change + one-line auto-summary. Try it with the eyes-open / eyes-closed EDFs in `docs/examples/`. |
+| `POST /v1/eeg/compare` | **live** | Two-file differential. Returns metric names + top 15 diffs ranked by %-change + one-line auto-summary. Try it with the eyes-open / eyes-closed recordings in `docs/examples/`. |
 | `POST /v1/bci/classify` | scaffolded (501) | Wired in Phase 1 week 5-6 |
 | `POST /v1/eeg/ingest` | scaffolded (501) | Wired in Phase 1 week 9-10 |
 

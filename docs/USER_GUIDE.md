@@ -437,7 +437,7 @@ for SET in spectral qc cognitive advanced full; do echo "=== biomarker_set=$SET 
 
 ## Step 8.5 — The eyes-open vs eyes-closed demo (compare endpoint)
 
-A much more compelling demo than dumping single-file biomarkers: send two recordings and get a curated differential. The repo ships with real eyes-open and eyes-closed EDFs under `docs/examples/` so you can run this immediately.
+A much more compelling demo than dumping single-file biomarkers: send two recordings and get a curated differential. The repo ships with real eyes-open and eyes-closed recordings under `docs/examples/` so you can run this immediately.
 
 **Windows PowerShell:**
 
