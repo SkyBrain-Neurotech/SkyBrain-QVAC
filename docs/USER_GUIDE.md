@@ -229,24 +229,36 @@ hardware works. Note the absolute path.
 
 ### Now compute biomarkers
 
-Pick the form for your shell. All three are single-line, paste-friendly:
+Pick the form for your shell. All three are single-line, paste-friendly, and pipe through a formatter so the nested response is readable:
 
-**Windows PowerShell** (recommended — handles JSON cleanly):
+**Windows PowerShell** (recommended — handles JSON cleanly, `ConvertTo-Json -Depth 10` is needed because PowerShell otherwise truncates nested objects and shows them as `@{key=; ...}`):
 
 ```powershell
-Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/biomarkers -ContentType "application/json" -Body '{"session_file":"samples/demo.edf","biomarker_set":"spectral"}'
+Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/biomarkers -ContentType "application/json" -Body '{"session_file":"samples/demo.edf","biomarker_set":"spectral"}' | ConvertTo-Json -Depth 10
 ```
 
-**Windows cmd.exe** (use **escaped double quotes** — cmd treats `'` as a literal character, so single-quoted JSON arrives at the server as `{}` and you'll get a JSON-decode error):
+**Windows cmd.exe** (escaped double quotes — cmd treats `'` as a literal character; pipe to `python -m json.tool` to pretty-print):
 
 ```cmd
-curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d "{\"session_file\":\"samples/demo.edf\",\"biomarker_set\":\"spectral\"}"
+curl -s -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d "{\"session_file\":\"samples/demo.edf\",\"biomarker_set\":\"spectral\"}" | python -m json.tool
 ```
 
 **macOS / Linux / Git Bash:**
 
 ```bash
-curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d '{"session_file":"samples/demo.edf","biomarker_set":"spectral"}'
+curl -s -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d '{"session_file":"samples/demo.edf","biomarker_set":"spectral"}' | python -m json.tool
+```
+
+### Drilling into specific values (PowerShell only)
+
+If you want to pull one biomarker out instead of seeing the whole tree:
+
+```powershell
+$r = Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/biomarkers -ContentType "application/json" -Body '{"session_file":"samples/demo.edf","biomarker_set":"spectral"}'
+$r.payload.channel_features.Fp1                       # all biomarkers for the Fp1 channel
+$r.payload.channel_features.Fp1.band_power_alpha      # just alpha band power on Fp1
+$r.payload.global_features                            # cross-channel summary
+$r.latency_ms                                         # how long the SDK took
 ```
 
 > **Why three different commands?** PowerShell's `curl` is an alias for
@@ -311,7 +323,13 @@ Run all five against the same recording to see how they differ.
 **Windows PowerShell:**
 
 ```powershell
-foreach ($set in @("spectral", "qc", "cognitive", "advanced", "full")) { Write-Host "`n=== biomarker_set=$set ===" -ForegroundColor Cyan; Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/biomarkers -ContentType "application/json" -Body "{`"session_file`":`"samples/demo.edf`",`"biomarker_set`":`"$set`"}" | ConvertTo-Json -Depth 4 }
+foreach ($set in @("spectral", "qc", "cognitive", "advanced", "full")) { Write-Host "`n=== biomarker_set=$set ===" -ForegroundColor Cyan; Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/biomarkers -ContentType "application/json" -Body "{`"session_file`":`"samples/demo.edf`",`"biomarker_set`":`"$set`"}" | ConvertTo-Json -Depth 10 }
+```
+
+**Windows cmd.exe:**
+
+```cmd
+for %S in (spectral qc cognitive advanced full) do @echo === biomarker_set=%S === && curl -s -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d "{\"session_file\":\"samples/demo.edf\",\"biomarker_set\":\"%S\"}" | python -m json.tool
 ```
 
 **macOS / Linux / Git Bash:**
@@ -418,6 +436,18 @@ before it even reaches curl. Always use **double quotes with backslash-escaped
 inner quotes** in cmd:
 ```cmd
 curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d "{\"session_file\":\"samples/demo.edf\",\"biomarker_set\":\"spectral\"}"
+```
+
+**Q. PowerShell shows `payload : @{channel_features=; global_features=; windows=; computation_params=}` with empty values.**
+A. The data is there — PowerShell's default display truncates nested
+objects at depth 2 and renders them as `@{key=; ...}`. Pipe to
+`ConvertTo-Json -Depth 10` to see the full structure, or access nested
+properties directly:
+```powershell
+$r = Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/biomarkers -ContentType "application/json" -Body '{"session_file":"samples/demo.edf","biomarker_set":"spectral"}'
+$r | ConvertTo-Json -Depth 10            # full pretty-printed tree
+$r.payload.channel_features.Fp1          # one channel's biomarkers
+$r.payload.global_features               # cross-channel summary
 ```
 
 **Q. The biomarker call returns `recording_not_found` even though the

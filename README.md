@@ -148,8 +148,14 @@ curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: applicati
 **macOS / Linux / Git Bash:**
 
 ```bash
-curl -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d '{"session_file":"samples/demo.edf","biomarker_set":"spectral"}'
+curl -s -X POST http://127.0.0.1:8765/v1/eeg/biomarkers -H "Content-Type: application/json" -d '{"session_file":"samples/demo.edf","biomarker_set":"spectral"}' | python -m json.tool
 ```
+
+> **Tip.** Pipe responses through `python -m json.tool` (bash/cmd) or
+> `ConvertTo-Json -Depth 10` (PowerShell) for readable output. Without
+> the depth flag, PowerShell shows nested objects as `@{key=; ...}`
+> with empty values — the data is there, the default formatter just
+> doesn't expand it.
 
 ## Endpoint status
 
