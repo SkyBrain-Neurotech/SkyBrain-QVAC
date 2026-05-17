@@ -35,6 +35,19 @@ class BiomarkerSet(str, Enum):
     FULL = "full"
 
 
+class BiomarkerView(str, Enum):
+    """Output verbosity for biomarker responses.
+
+    `summary` (default) narrows the payload to the most relevant top-level
+    metrics per channel — what a demo or dashboard needs. `detailed` returns
+    the full SDK output, including per-window time series. Switch to
+    detailed when you need every numeric.
+    """
+
+    SUMMARY = "summary"
+    DETAILED = "detailed"
+
+
 class ErrorDetail(BaseModel):
     """Single error object, OpenAI-shaped."""
 

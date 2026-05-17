@@ -49,6 +49,20 @@ class _UnavailableAdapter:
         file_path: str,
         biomarker_set: str,
         profile: str,
+        view: str = "summary",
+    ) -> dict[str, object]:
+        raise RuntimeError(
+            "skybrain-sdk not installed; service is running in docs-only mode. "
+            'Install via `pip install -e ".[sdk]"` to enable inference.'
+        )
+
+    def compare_recordings(
+        self,
+        file_a: str,
+        file_b: str,
+        label_a: str,
+        label_b: str,
+        profile: str,
     ) -> dict[str, object]:
         raise RuntimeError(
             "skybrain-sdk not installed; service is running in docs-only mode. "

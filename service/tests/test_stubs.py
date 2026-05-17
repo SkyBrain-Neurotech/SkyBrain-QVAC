@@ -11,7 +11,8 @@ from fastapi.testclient import TestClient
     [
         "/v1/bci/classify",
         "/v1/eeg/ingest",
-        "/v1/eeg/compare",
+        # /v1/eeg/compare moved to live status in Phase 0; it has its own
+        # test file (test_compare.py) and shouldn't be in the 501 list.
     ],
 )
 def test_stub_endpoint_returns_501(client: TestClient, path: str) -> None:

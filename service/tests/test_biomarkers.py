@@ -102,3 +102,30 @@ def test_biomarkers_rejects_unknown_biomarker_set(client: TestClient) -> None:
     )
     # Pydantic enum validation kicks in before the file check.
     assert response.status_code == 422
+
+
+@pytest.mark.sdk
+def test_biomarkers_summary_view_smaller_than_detailed(
+    client: TestClient,
+    sample_edf: Path,
+) -> None:
+    """Summary view drops per-window time series; should always be smaller."""
+    body = {"session_file": str(sample_edf), "biomarker_set": "spectral"}
+
+    summary_resp = client.post(
+        "/v1/eeg/biomarkers",
+        json={**body, "view": "summary"},
+    )
+    detailed_resp = client.post(
+        "/v1/eeg/biomarkers",
+        json={**body, "view": "detailed"},
+    )
+    assert summary_resp.status_code == 200, summary_resp.text
+    assert detailed_resp.status_code == 200, detailed_resp.text
+
+    summary_size = len(summary_resp.content)
+    detailed_size = len(detailed_resp.content)
+    assert summary_size < detailed_size, (
+        f"summary ({summary_size} bytes) should be smaller than "
+        f"detailed ({detailed_size} bytes)"
+    )

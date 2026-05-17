@@ -65,6 +65,7 @@ def post_biomarkers(
             file_path=str(file_path),
             biomarker_set=body.biomarker_set.value,
             profile=body.profile,
+            view=body.view.value,
         )
     except FileNotFoundError as exc:  # narrow re-raise
         raise HTTPException(
@@ -114,6 +115,7 @@ def post_biomarkers(
             extra={
                 "biomarker_set": body.biomarker_set.value,
                 "profile": body.profile,
+                "view": body.view.value,
                 "kind": adapter_result["kind"],
             },
         ),

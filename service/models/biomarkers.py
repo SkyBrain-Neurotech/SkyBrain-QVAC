@@ -6,7 +6,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from service.models.common import BiomarkerSet
+from service.models.common import BiomarkerSet, BiomarkerView
 
 
 class BiomarkerRequest(BaseModel):
@@ -29,6 +29,14 @@ class BiomarkerRequest(BaseModel):
     profile: str = Field(
         default="skybrain_4ch",
         description="SkyBrain SDK analysis profile (e.g. 'skybrain_4ch', 'clinical').",
+    )
+    view: BiomarkerView = Field(
+        default=BiomarkerView.SUMMARY,
+        description=(
+            "Output verbosity. `summary` returns top-level per-channel metrics "
+            "(default; what a demo needs). `detailed` returns the full SDK "
+            "payload including per-window time series."
+        ),
     )
 
 
