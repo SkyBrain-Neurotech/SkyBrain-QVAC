@@ -7,7 +7,7 @@
 
 ---
 
-> **Status — May 2026.** A reference implementation of the Phase 1 deliverables is already live and public at **https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC** under Apache 2.0. Three of six endpoints (`/v1/health`, `/v1/capabilities`, `/v1/eeg/biomarkers` across five biomarker bundles) are functional end-to-end against the real SkyBrain SDK 1.5.0. Thirteen tests pass; cross-platform GitHub Actions CI is scaffolded for macOS, Linux, and Windows on Python 3.11 and 3.12; SHA-256 input hashing and timestamped JSON Lines audit logging are wired per the CDSCO-compliance commitment. Warm-cache latency on a 30-second, 4-channel recording: 125 ms for spectral biomarkers, 140 ms for full analysis — well inside the sub-200 ms budget stated below. This grant funds the remaining 9 weeks of Phase 1 (the three scaffolded endpoints, Cognitive Edge integration, reference Jupyter notebook, cross-platform verification, demo). The bridge architecture, the SDK adapter boundary, and the QVAC plugin design package are reviewable today.
+> **Status — May 2026.** A reference implementation of the Phase 1 deliverables is already live and public at **https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC** under Apache 2.0, tagged `v0.1.0`. **Four of six endpoints** are functional end-to-end against the real SkyBrain SDK 1.5.0: `/v1/health`, `/v1/capabilities`, `/v1/eeg/biomarkers` (five biomarker bundles, `view=summary | detailed`), and `/v1/eeg/compare` — a two-recording differential whose auto-summary correctly identifies the classic eyes-closed Berger alpha effect (1600 %+ alpha increase over occipital channels) from real eye-open / eye-closed CSV recordings committed to the repo. Sixteen tests pass against the real SDK; cross-platform GitHub Actions CI is scaffolded for macOS, Linux, and Windows on Python 3.11 and 3.12; SHA-256 input hashing and timestamped JSON Lines audit logging are wired per the CDSCO-compliance commitment. Warm-cache latency on a 30-second, 4-channel recording: 125 ms for spectral biomarkers, 140 ms for full analysis — well inside the sub-200 ms budget. The proprietary SDK is gated to the Tether grants team for the duration of review via private GitHub collaborator invite (`SkyBrain-Neurotech/sdk-release`). This grant funds the remaining 9 weeks of Phase 1 — the two scaffolded endpoints (BCI classify, streaming ingest), Cognitive Edge integration, reference Jupyter notebook, cross-platform verification, and demo recording.
 
 ---
 
@@ -17,7 +17,7 @@ On April 9, 2026, Paolo Ardoino committed Tether to expanding the QVAC ecosystem
 
 ## Why this proposal exists
 
-QVAC's stated mission is local-first, on-device, peer-to-peer AI. The current QVAC SDK supports LLM inference, embeddings, speech, vision, OCR, and translation. It does not yet support biosignal ingestion or BCI inference. QVAC Health runs on wearables for cardiac and activity data but has no neural signal layer. QVAC MedPsy reasons about medical and psychological states but lacks physiological ground truth for stress, attention, anxiety, and sleep.
+QVAC's stated mission is local-first, on-device, peer-to-peer AI. The current QVAC SDK supports LLM inference, embeddings, speech, vision, OCR, and translation. QVAC Health (https://qvac.tether.io/products/health/) imports observational wearable data — heart rate, sleep, activity, voice-driven biomarker logging — but does not yet have the algorithmic neural-signal layer: real-time EEG biomarkers, BCI inference, or time-synchronised multi-modal physiology fusion (EEG + ECG + PPG aligned). QVAC MedPsy reasons about medical and psychological states but lacks physiological ground truth for stress, attention, anxiety, and sleep. SkyBrain provides exactly that neural-signal layer — and ingests cleanly into the cardiovascular signals Health already collects.
 
 Brain-computer interfaces are exactly where QVAC's local-first thesis is most needed. Neural data is the most sensitive biometric data a person can generate. Cloud-based BCI processing creates the privacy violation Tether explicitly opposes. On-device EEG inference with consent-driven data ownership is the architecture the field needs, and Tether is the only entity publicly building the infrastructure to support it at scale.
 
@@ -50,8 +50,8 @@ SkyBrain SDK exposed as a local HTTP service implementing QVAC's OpenAI-compatib
 
 Concrete deliverables at end of Phase 1:
 
-- Open-source repository under permissive license (Apache 2.0 or MIT) with the service layer code, documentation, and reference integration examples
-- QVAC SDK plugin manifest defining how to invoke EEG capabilities through the standard QVAC interface
+- Open-source repository under permissive license (Apache 2.0 chosen) with the service layer code, documentation, and reference integration examples — already live at github.com/SkyBrain-Neurotech/SkyBrain-QVAC
+- Plugin design package and capability schema. (Note: QVAC's plugin model is a TypeScript npm package using `definePlugin` + `invokePlugin`, not a JSON manifest as we initially assumed. The Phase 1 deliverable is a design doc + JSON Schema describing the HTTP contract that the Phase 2 `@skybrain/qvac-bci-addon` npm package will wrap.)
 - End-to-end working demo: user wears BrainBit headband, opens Cognitive Edge mobile app, sees brain biomarkers (cognitive load, stress, relaxation, preparedness) displayed inside QVAC Health dashboard, all processed locally, no cloud calls
 - Technical documentation suitable for inclusion in docs.qvac.tether.io
 - Cross-platform compatibility: macOS, Linux, Windows desktop; Android via mobile bridge
