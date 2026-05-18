@@ -133,7 +133,7 @@ haven't accepted yet.
 git clone https://github.com/SkyBrain-Neurotech/sdk-release.git ..\sdk-release
 
 # Install the wheel into THIS bridge's venv
-pip install ..\sdk-release\wheels\skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+pip install ..\sdk-release\wheels\skybrain_eeg_sdk-1.5.0-cp311-cp311-win_amd64.whl
 ```
 
 #### If `git clone` prompts you for credentials
@@ -172,7 +172,7 @@ D:\Workspace\May\
 │   ├── docs\
 │   └── ...
 └── sdk-release\            ← the private SDK repo (Read-collaborator-only)
-    └── wheels\skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+    └── wheels\skybrain_eeg_sdk-1.5.0-cp311-cp311-win_amd64.whl
 ```
 
 Keeping them as siblings (rather than nesting `sdk-release` inside the
@@ -639,3 +639,6 @@ A. With the SDK installed: `pytest`. You should see `13 passed`.
 File an issue at
 [github.com/SkyBrain-Neurotech/SkyBrain-QVAC/issues](https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC/issues),
 or reach out at info@skybrain.in.
+
+
+eyJjbGllbnRfaWQiOiJxdmFjLXRlc3QiLCJleHBpcmF0aW9uIjoiMjAyNi0xMi0zMSIsImlzc3VlZF9hdCI6IjIwMjYtMDUtMThUMTE6NDk6NDMuMDQ3NjY0Iiwia2V5X2lkIjoiYmNiNzg5MjAtYzU3NS00YTkxLWE2OGItNWUyMzg3NjFhNTg2IiwicHJvZHVjdCI6IlNLRVkiLCJ0aWVyIjoiUFJPRkVTU0lPTkFMIn0.C7Ru3RYYxe458lYGm077d30W5pSF5E9FOVLx1VP4B1DAYK6w9v-Inmi40__Pcl6fyXtZjmfD6y6S0-9fEOEV20hOvTJyZJMzrcaGZ2Xwx0YcMqAnoeanCNW-mNvg-YHYwuzWw8_yLbpA9yLgFUSTTz5e_kCUzGI52QEKKSMCRK_Hztyd1AfYTa-sE3UkcszgLv0OZoeQxLsDMw_MdroefJUQyHz-6iJg4amZ7-dwrVBbWnjRfHVVXLdSzbM7ztevvRoW-F6G7GRJt8rnSzbs_ct5keYHpsySBLvw9WzgTjcii47RGvZxW_qVu-8gmRotxN1FMszTRUc5cMo32qfUBg

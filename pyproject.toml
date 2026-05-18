@@ -47,7 +47,7 @@ sdk = [
     #   2. Clone it as a sibling of this bridge:
     #          git clone https://github.com/SkyBrain-Neurotech/sdk-release.git ../sdk-release
     #   3. Install the wheel from the local clone:
-    #          pip install ../sdk-release/wheels/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+    #          pip install ../sdk-release/wheels/skybrain_eeg_sdk-1.5.0-cp311-cp311-win_amd64.whl
     #
     # Distribution name is `skybrain-eeg-sdk`; import name is `skybrain_sdk`.
     "skybrain-eeg-sdk>=1.5,<2.0",

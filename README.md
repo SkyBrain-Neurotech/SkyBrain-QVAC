@@ -106,7 +106,7 @@ pip install -e ".[dev]"
 #     (If `git clone` prompts for credentials, see USER_GUIDE.md
 #      § "If git clone prompts you for credentials".)
 git clone https://github.com/SkyBrain-Neurotech/sdk-release.git ../sdk-release
-pip install ../sdk-release/wheels/skybrain_eeg_sdk-1.5.0-py3-none-any.whl
+pip install ../sdk-release/wheels/skybrain_eeg_sdk-1.5.0-cp311-cp311-win_amd64.whl
 
 # 3b. If you don't have SDK access, run the bridge in docs-only mode:
 $env:SKYBRAIN_QVAC_REQUIRE_SDK="false"    # PowerShell
