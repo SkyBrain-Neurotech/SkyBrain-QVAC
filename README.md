@@ -51,40 +51,9 @@ Invoke-RestMethod -Method POST -Uri http://127.0.0.1:8765/v1/eeg/biomarkers -Con
 
 ## Architecture
 
-```
-   Any HTTP client (QVAC SDK / Cognitive Edge / curl / your app)
-                              │
-                       HTTP/JSON
-                              ▼
-   ┌──────────────────────────────────────────────────────┐
-   │  FastAPI service on localhost:8765                   │
-   │                                                      │
-   │   GET  /v1/health                                    │
-   │   GET  /v1/capabilities                              │
-   │   POST /v1/eeg/biomarkers     ◀── live               │
-   │   POST /v1/eeg/compare        ◀── live               │
-   │   POST /v1/bci/classify       ◀── Phase 1 wk 5–6     │
-   │   POST /v1/eeg/ingest         ◀── Phase 1 wk 9–10    │
-   └────────────────────┬─────────────────────────────────┘
-                        │ adapter Protocol
-                        │ (sole skybrain_sdk import site)
-                        ▼
-   ┌──────────────────────────────────────────────────────┐
-   │  skybrain_eeg_sdk (proprietary, pip install)         │
-   │  50+ biomarkers · 7 paradigms · 5 Bayesian models    │
-   └────────────────────┬─────────────────────────────────┘
-                        │
-                        ▼
-   ┌──────────────────────────────────────────────────────┐
-   │  BrainBit / DragonEEG / OpenBCI / any EDF file       │
-   └──────────────────────────────────────────────────────┘
-```
+![Request flow: HTTP client → FastAPI service on localhost:8765 → skybrain_sdk.py adapter Protocol (sole import point, enforced by import-linter) → skybrain_eeg_sdk private wheel → EEG hardware or file inputs (BrainBit, DragonEEG, OpenBCI, EDF, CSV). Response travels back along the same path: hardware/file → processed data → standardized response → HTTP/JSON to the client.](docs/architecture.png)
 
-The **one architectural rule that matters**:
-`service/adapters/skybrain_sdk.py` is the *only* file that may
-`import skybrain_sdk`. Everything else depends on the
-`SkyBrainAdapter` Protocol. Enforced by `import-linter` in CI — try
-adding the import anywhere else and the build breaks.
+A request enters as OpenAI-compatible HTTP/JSON. The FastAPI service depends only on the `SkyBrainAdapter` Protocol; the concrete adapter (`service/adapters/skybrain_sdk.py`) is the **only** file in the codebase that may `import skybrain_sdk` — enforced by an `import-linter` contract in CI. The proprietary SDK does the actual signal processing against EEG hardware or recorded files, returns processed data, and the adapter normalises it into a standardised JSON response. No cloud calls; no telemetry; every inference produces a SHA-256-fingerprinted JSON Lines audit entry.
 
 ## Three-command quickstart
 
