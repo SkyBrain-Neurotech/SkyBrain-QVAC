@@ -3,9 +3,10 @@
 > **Local-first EEG/BCI biomarkers for the QVAC ecosystem.**
 > A small Python HTTP service that exposes [SkyBrain's proprietary EEG/BCI SDK](https://skybrain.in) over an OpenAI-compatible API. Built as the Phase 1 deliverable of SkyBrain's [Tether QVAC integration grant](docs/01_QVAC_Strategic_Proposal.md).
 
+[![CI](https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC/actions/workflows/ci.yml/badge.svg)](https://github.com/SkyBrain-Neurotech/SkyBrain-QVAC/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Tests](https://img.shields.io/badge/tests-13%20passing-brightgreen.svg)](#testing)
+[![Tests](https://img.shields.io/badge/tests-16%20passing-brightgreen.svg)](#testing)
 [![Status: Phase 1](https://img.shields.io/badge/status-Phase%201-orange.svg)](docs/02_QVAC_Technical_Brief.md)
 
 ---
@@ -272,7 +273,7 @@ lint-imports           # architecture boundary
 ```
 
 CI runs the full sweep on macOS, Ubuntu, and Windows for Python 3.11 + 3.12 —
-see [`ci/github-actions/ci.yml`](ci/github-actions/ci.yml).
+see [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
 
 ## About the SkyBrain SDK
 

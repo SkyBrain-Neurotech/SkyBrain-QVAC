@@ -180,7 +180,7 @@ How it's enforced:
   allow_indirect_imports = "true"
   ```
 - `allow_indirect_imports = "true"` because the dependency injection in `service.dependencies.get_adapter()` *does* indirectly pull `skybrain_sdk` through the concrete adapter — that's by design. Direct imports are what we forbid.
-- `lint-imports` runs in CI (`ci/github-actions/ci.yml`) under the "Architecture boundary" step. The build breaks on any new direct import.
+- `lint-imports` runs in CI (`.github/workflows/ci.yml`) under the "Architecture boundary" step. The build breaks on any new direct import.
 
 ## How to add a new endpoint
 
@@ -223,7 +223,7 @@ Two design choices worth knowing:
 
 ## CI architecture
 
-`ci/github-actions/ci.yml` (mirror to `.github/workflows/ci.yml` when ready to enable). Matrix: macOS × Linux × Windows, Python 3.11 × 3.12. Steps:
+`.github/workflows/ci.yml` — active. Matrix: macOS × Linux × Windows, Python 3.11 × 3.12. Steps:
 
 1. Checkout
 2. Set up Python with pip caching

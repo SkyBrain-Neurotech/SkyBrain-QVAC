@@ -175,7 +175,7 @@ SkyBrain-QVAC/
 │   ├── README.md                              ← architecture for the Phase 2 npm bridge plugin
 │   ├── capability-schema.json                 ← JSON Schema of the HTTP contract for TS codegen
 │   └── package.json.example                   ← sample @skybrain/qvac-bci-addon manifest
-└── ci/github-actions/ci.yml                   ← macOS / Ubuntu / Windows × Python 3.11/3.12
+└── .github/workflows/ci.yml                   ← macOS / Ubuntu / Windows × Python 3.11/3.12; active
 ```
 
 The proprietary SkyBrain SDK is installed from a separate **private** repo (`SkyBrain-Neurotech/sdk-release`) accessible only to approved parties via GitHub collaborator invite. Reviewers email info@skybrain.in to be added. The bridge boots in docs-only mode (`SKYBRAIN_QVAC_REQUIRE_SDK=false`) without the SDK — useful for inspecting the API surface before access is granted.

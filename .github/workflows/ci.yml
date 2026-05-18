@@ -1,7 +1,7 @@
 name: CI
 
-# Located under ci/github-actions/ to match the technical brief §2 layout.
-# Copy / symlink to .github/workflows/ci.yml when ready to enable on GitHub.
+# Active workflow — GitHub Actions auto-discovers .github/workflows/*.yml.
+# Runs on push and PR to main. SDK-marked tests skip without the [sdk] extra.
 
 on:
   push:

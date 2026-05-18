@@ -41,7 +41,7 @@ SkyBrain Neurotech builds EEG/BCI infrastructure: a proprietary Python SDK that 
   - `POST /v1/eeg/ingest` — scheduled Week 9-10 (depends on streaming-transport decision)
   - `POST /v1/eeg/compare` — scheduled Week 11-12
 - **Tests:** 13 passing against the real SkyBrain SDK 1.5.0 (`pytest`)
-- **CI:** GitHub Actions workflow defined for macOS / Linux / Windows × Python 3.11/3.12 (not yet enabled — file is at `ci/github-actions/ci.yml`, needs symlink to `.github/workflows/ci.yml`)
+- **CI:** GitHub Actions workflow active at `.github/workflows/ci.yml` for macOS / Linux / Windows × Python 3.11/3.12
 - **Audit log:** JSON Lines per inference at `audit/YYYY-MM-DD.jsonl` with SHA-256 of input
 - **Performance on a 30s × 4ch synthetic EDF:** spectral 125ms, qc 6ms, full 140ms warm-cache (target was <200ms biomarker / <15ms classify; biomarker met, classify TBD)
 - **Documentation:**
