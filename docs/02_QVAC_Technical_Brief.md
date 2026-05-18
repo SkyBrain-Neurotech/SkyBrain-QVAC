@@ -346,8 +346,9 @@ This separation is analogous to how Tether maintains QVAC Fabric (open-source) a
 ### Phase 1 team
 
 - Rakesh Jakati (founder, technical lead, Python and architecture)
-- Two engineering interns (rotating, supporting infrastructure and testing)
+- Five engineering interns (rotating, supporting infrastructure and testing)
 - Dr. Bhaskar Tripathi (AI/ML advisor, signal processing review)
+- Dr. Ganesh Naik (Head of Research, EEG - ECG - PPG - BCI)
 - Aranyak Banerjee (BCI research scientist, validation and benchmarking)
 
 ### Phase 2 team additions (funded from Phase 2 grant)
