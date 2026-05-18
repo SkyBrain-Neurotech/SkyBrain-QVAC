@@ -36,8 +36,12 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Audit logs (runtime artifacts — sensitive, never commit)
-audit/
+# Audit logs (runtime artifacts at the repo root — sensitive, never commit).
+# Anchored with a leading slash so this pattern only matches the top-level
+# ./audit/ directory created by the running service. Without the anchor,
+# `audit/` would also match `service/audit/` (the source subpackage) and
+# silently strip those files from git checkouts — which would break CI.
+/audit/
 *.jsonl
 !service/tests/**/*.jsonl
 
