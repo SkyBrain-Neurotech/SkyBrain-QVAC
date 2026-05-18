@@ -117,6 +117,14 @@ warn_return_any = true
 warn_unused_configs = true
 disallow_any_unimported = false
 plugins = ["pydantic.mypy"]
+# Editable-installed packages register via hatch .pth files that mypy's
+# resolver doesn't always follow (varies by version). Anchor the search
+# path to the directory holding this pyproject.toml so mypy reliably
+# finds `service/` and its subpackages on both local dev and fresh CI
+# installs.
+mypy_path = "$MYPY_CONFIG_FILE_DIR"
+explicit_package_bases = true
+namespace_packages = true
 
 [[tool.mypy.overrides]]
 # SkyBrain SDK has no published type stubs yet — silence missing-import errors
