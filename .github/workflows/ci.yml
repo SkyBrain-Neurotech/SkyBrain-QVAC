@@ -40,7 +40,10 @@ jobs:
         run: black --check .
 
       - name: Type check (mypy)
-        run: mypy service/
+        # Use -p service (package mode) instead of `mypy service/` (directory
+        # mode). Package mode uses Python's import resolution, which works
+        # reliably across hatch's editable install variants and mypy versions.
+        run: mypy -p service
 
       - name: Architecture boundary (import-linter)
         # The forbidden-module contract references `skybrain_sdk`, which

@@ -125,6 +125,7 @@ plugins = ["pydantic.mypy"]
 mypy_path = "$MYPY_CONFIG_FILE_DIR"
 explicit_package_bases = true
 namespace_packages = true
+files = ["service"]
 
 [[tool.mypy.overrides]]
 # SkyBrain SDK has no published type stubs yet — silence missing-import errors
